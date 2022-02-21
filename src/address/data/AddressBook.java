@@ -3,7 +3,6 @@ package address.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The {@link AddressBook} contains a collection of {@link AddressEntry address entries}.
@@ -18,7 +17,7 @@ public class AddressBook {
     /**
      * Compares {@link AddressEntry address entries} by last name, then first name.
      */
-    public final class AddressEntryComparator implements Comparator<AddressEntry> {
+    private final class AddressEntryComparator implements Comparator<AddressEntry> {
 
         /**
          * @param entry1 The first {@link AddressEntry}.
@@ -34,10 +33,10 @@ public class AddressBook {
             if (entry1 == null && entry2 == null) {
                 return 0;
             }
-            if (entry1 == null && entry2 != null) {
+            if (entry1 == null) {
                 return -1;
             }
-            if (entry1 != null && entry2 == null) {
+            if (entry2 == null) {
                 return 1;
             }
 
