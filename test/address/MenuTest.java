@@ -239,5 +239,20 @@ public class MenuTest {
 
     @Test
     void option_ListEntries() {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nG\nG".getBytes());
+
+        Menu menu = new Menu(new Scanner(inputStream));
+
+        // Check that it prints out only one entry
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintStream old = System.out;
+        System.setOut(new PrintStream(stream));
+
+        menu.listEntries(ab);
+
+        System.out.flush();
+        System.setOut(old);
+
+        Assertions.assertEquals("1: Victor Pan\n12345 Street\nCity, CA 12345\n555-555-5555\nvpan2@horizon.csueastbay.edu\n\r\n", stream.toString());
     }
 }
