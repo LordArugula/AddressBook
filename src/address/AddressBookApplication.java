@@ -19,7 +19,7 @@ public class AddressBookApplication {
         final String filePath = "resources/AddressInputDataFile.txt";
 
         AddressBook ab = new AddressBook();
-        initAddressBookApplication(ab, filePath);
+        initAddressBook(ab, filePath);
 
         Menu menu = new Menu();
         boolean shouldQuit;
@@ -37,7 +37,7 @@ public class AddressBookApplication {
      *                 {@link AddressEntry address entries} added to it.
      * @param filePath The path to the text file to load {@link AddressEntry address entries} from.
      */
-    private static void initAddressBookApplication(AddressBook ab, String filePath) {
+    private static void initAddressBook(AddressBook ab, String filePath) {
         ab.loadFile(filePath);
     }
 }
