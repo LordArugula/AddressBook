@@ -144,9 +144,19 @@ public class AddressBook {
 
     /**
      * Prints each {@link AddressEntry} in this {@link AddressBook}
-     * in sorted by last name, then first name.
+     * in order by last name, then first name.
      */
     public void listEntries() {
+        listEntries(entries);
+    }
+
+    /**
+     * Prints each {@link AddressEntry} in entries
+     * in order by last name, then first name.
+     *
+     * @param entries A collection of {@link AddressEntry address entries}.
+     */
+    public static void listEntries(Collection<AddressEntry> entries) {
         int i = 1;
         StringBuilder stringBuilder = new StringBuilder(255);
         for (AddressEntry entry : entries) {
