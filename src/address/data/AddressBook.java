@@ -102,6 +102,8 @@ public class AddressBook {
             scanner.close();
         } catch (IOException e) {
             System.out.println("Could not read from file at: " + filePath);
+        } catch (NoSuchElementException e) {
+            System.out.println("Reached the end of file.");
         }
     }
 
