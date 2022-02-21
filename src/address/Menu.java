@@ -193,7 +193,7 @@ public class Menu {
         String indexString = prompt("Enter index of address entry:");
         try {
             int i = Integer.parseInt(indexString);
-            AddressEntry entry = new ArrayList<>(entries).get(i);
+            AddressEntry entry = new ArrayList<>(entries).get(i - 1);
             addressBook.removeEntry(entry);
         } catch (Exception e) {
             System.out.println("Invalid index.");
