@@ -174,12 +174,13 @@ public class MenuTest {
 
     @Test
     void option_RemoveEntry() {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nGr\n0\nPan\n0".getBytes());
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nGr\n2\nPan\n1\nG\n0".getBytes());
 
         Menu menu = new Menu(new Scanner(inputStream));
 
         menu.option_LoadFile(ab);
 
+        // Remove "Lynne Grewe" from address book
         Assertions.assertEquals(3, ab.size());
         menu.option_RemoveEntry(ab);
         Assertions.assertEquals(2, ab.size());
@@ -188,11 +189,23 @@ public class MenuTest {
         Assertions.assertEquals(1, entries.size());
         Optional<AddressEntry> entry = entries.stream().findFirst();
         Assertions.assertTrue(entry.isPresent());
-        Assertions.assertEquals("Lynne", entry.get().getFirstName());
+        Assertions.assertEquals("Butch", entry.get().getFirstName());
 
-        // no longer exists
+        // Remove "Victor Pan" from address book
         menu.option_RemoveEntry(ab);
         Assertions.assertEquals(1, ab.size());
+
+        // Remove invalid index
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintStream old = System.out;
+        System.setOut(new PrintStream(stream));
+
+        menu.option_RemoveEntry(ab);
+        System.out.flush();
+        System.setOut(old);
+
+        String errorMessage = "Invalid index.\r\n";
+        Assertions.assertTrue(stream.toString().endsWith(errorMessage));
 
         // no input
         Assertions.assertThrows(NoSuchElementException.class, () -> menu.option_RemoveEntry(ab));
@@ -212,15 +225,15 @@ public class MenuTest {
 
         System.out.flush();
 
-        String list = "Last Name:\r\nNo address entries.\r\n";
-        Assertions.assertEquals(list, stream.toString());
+        String errorMessage = "No address entries.\r\n";
+        Assertions.assertTrue(stream.toString().endsWith(errorMessage));
 
         menu.option_LoadFile(ab);
 
         System.out.flush();
         System.setOut(old);
 
-        Assertions.assertNotEquals(list, stream.toString());
+        Assertions.assertNotEquals(errorMessage, stream.toString());
 
     }
 
