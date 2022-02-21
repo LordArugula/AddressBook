@@ -140,11 +140,11 @@ public class MenuTest {
         Menu menu = new Menu(new Scanner(inputStream));
 
         Assertions.assertEquals(1, ab.size());
-        menu.option_LoadFile(ab);
+        menu.loadFile(ab);
         Assertions.assertEquals(3, ab.size());
 
         // Non existent file
-        menu.option_LoadFile(ab);
+        menu.loadFile(ab);
         // Assertions.assertThrows(IOException.class, () -> menu.option_LoadFile(ab));
     }
 
@@ -164,11 +164,11 @@ public class MenuTest {
         Menu menu = new Menu(new Scanner(inputStream));
 
         Assertions.assertEquals(1, ab.size());
-        menu.option_AddEntry(ab);
+        menu.addEntry(ab);
         Assertions.assertEquals(2, ab.size());
 
         // no input
-        Assertions.assertThrows(NoSuchElementException.class, () -> menu.option_AddEntry(ab));
+        Assertions.assertThrows(NoSuchElementException.class, () -> menu.addEntry(ab));
         Assertions.assertEquals(2, ab.size());
     }
 
@@ -178,11 +178,11 @@ public class MenuTest {
 
         Menu menu = new Menu(new Scanner(inputStream));
 
-        menu.option_LoadFile(ab);
+        menu.loadFile(ab);
 
         // Remove "Lynne Grewe" from address book
         Assertions.assertEquals(3, ab.size());
-        menu.option_RemoveEntry(ab);
+        menu.removeEntry(ab);
         Assertions.assertEquals(2, ab.size());
 
         Collection<AddressEntry> entries = ab.findEntries("G");
@@ -192,7 +192,7 @@ public class MenuTest {
         Assertions.assertEquals("Butch", entry.get().getFirstName());
 
         // Remove "Victor Pan" from address book
-        menu.option_RemoveEntry(ab);
+        menu.removeEntry(ab);
         Assertions.assertEquals(1, ab.size());
 
         // Remove invalid index
@@ -200,7 +200,7 @@ public class MenuTest {
         PrintStream old = System.out;
         System.setOut(new PrintStream(stream));
 
-        menu.option_RemoveEntry(ab);
+        menu.removeEntry(ab);
         System.out.flush();
         System.setOut(old);
 
@@ -208,7 +208,7 @@ public class MenuTest {
         Assertions.assertTrue(stream.toString().endsWith(errorMessage));
 
         // no input
-        Assertions.assertThrows(NoSuchElementException.class, () -> menu.option_RemoveEntry(ab));
+        Assertions.assertThrows(NoSuchElementException.class, () -> menu.removeEntry(ab));
     }
 
     @Test
@@ -221,14 +221,14 @@ public class MenuTest {
         PrintStream old = System.out;
         System.setOut(new PrintStream(stream));
 
-        menu.option_FindEntry(ab);
+        menu.findEntry(ab);
 
         System.out.flush();
 
         String errorMessage = "No address entries.\r\n";
         Assertions.assertTrue(stream.toString().endsWith(errorMessage));
 
-        menu.option_LoadFile(ab);
+        menu.loadFile(ab);
 
         System.out.flush();
         System.setOut(old);

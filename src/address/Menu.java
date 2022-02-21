@@ -140,19 +140,19 @@ public class Menu {
 
         switch (input) {
             case "a":
-                option_LoadFile(addressBook);
+                loadFile(addressBook);
                 break;
             case "b":
-                option_AddEntry(addressBook);
+                addEntry(addressBook);
                 break;
             case "c":
-                option_RemoveEntry(addressBook);
+                removeEntry(addressBook);
                 break;
             case "d":
-                option_FindEntry(addressBook);
+                findEntry(addressBook);
                 break;
             case "e":
-                option_ListEntries(addressBook);
+                listEntries(addressBook);
                 break;
             case "f":
                 return true;
@@ -167,7 +167,7 @@ public class Menu {
      *
      * @param addressBook The {@link AddressBook} to add entries to.
      */
-    public void option_LoadFile(AddressBook addressBook) {
+    public void loadFile(AddressBook addressBook) {
         String fileName = prompt("Enter a file name:");
         addressBook.loadFile(fileName);
     }
@@ -177,7 +177,7 @@ public class Menu {
      *
      * @param addressBook The {@link AddressBook} to add an entry to.
      */
-    public void option_AddEntry(AddressBook addressBook) {
+    public void addEntry(AddressBook addressBook) {
         AddressEntry entry = promptEntry();
         addressBook.addEntry(entry);
     }
@@ -188,7 +188,7 @@ public class Menu {
      *
      * @param addressBook The {@link AddressBook} to remove an entry from.
      */
-    public void option_RemoveEntry(AddressBook addressBook) {
+    public void removeEntry(AddressBook addressBook) {
         Collection<AddressEntry> entries = findEntries(addressBook, prompt_LastName());
         String indexString = prompt("Enter index of address entry:");
         try {
@@ -206,7 +206,7 @@ public class Menu {
      *
      * @param addressBook The address book to search from.
      */
-    public void option_FindEntry(AddressBook addressBook) {
+    public void findEntry(AddressBook addressBook) {
         findEntries(addressBook, prompt_LastName());
     }
 
@@ -215,7 +215,7 @@ public class Menu {
      *
      * @param addressBook The address book to list from {@link AddressEntry entries}.
      */
-    public void option_ListEntries(AddressBook addressBook) {
+    public void listEntries(AddressBook addressBook) {
         addressBook.listEntries();
     }
 

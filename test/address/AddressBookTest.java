@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Optional;
@@ -41,8 +42,10 @@ public class AddressBookTest {
         Assertions.assertEquals(1, ab.size());
 
         ab.loadFile("resources/AddressInputDataFile.txt");
-
         Assertions.assertEquals(3, ab.size());
+
+        // Should just print error message, but not throw
+        Assertions.assertDoesNotThrow(() -> ab.loadFile("resources/nonexistentFile.txt"));
     }
 
     @Test
