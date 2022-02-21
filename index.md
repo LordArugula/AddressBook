@@ -38,7 +38,7 @@ The `Menu` class gives the user a simple command-line interface to add, remove, 
 ### UML Class Hierarchy Diagram
 Showing Hierarchy and Cardinality and Object Associations for this project.
 
-![Address Book Application UML diagram](https://github.com/LordArugula/AddressBook/blob/main/docs/Address%20UML.svg)
+![Address Book Application UML diagram](https://github.com/LordArugula/AddressBook/blob/gh-pages/Address%20UML.svg)
 
 ## Working Screenshots
 
