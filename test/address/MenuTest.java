@@ -14,10 +14,19 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * Tests the {@link Menu} class.
+ */
 public class MenuTest {
 
+    /**
+     * The {@link AddressBook} used for tests.
+     */
     private AddressBook ab;
 
+    /**
+     * Sets up the address book and entry used for tests.
+     */
     @BeforeEach
     void setUp() {
         ab = new AddressBook();
@@ -25,6 +34,9 @@ public class MenuTest {
         ab.addEntry(entry);
     }
 
+    /**
+     * Tests that prompt_FirstName returns the correct value.
+     */
     @Test
     void prompt_FirstName() {
 
@@ -39,6 +51,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_FirstName(), FIRST_NAME_2);
     }
 
+    /**
+     * Tests that prompt_LastName returns the correct value.
+     */
     @Test
     void prompt_LastName() {
         String LAST_NAME_1 = "Pan";
@@ -52,6 +67,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_LastName(), LAST_NAME_2);
     }
 
+    /**
+     * Tests that prompt_Street returns the correct value.
+     */
     @Test
     void prompt_Street() {
         String STREET_1 = "12345 Street Name";
@@ -65,6 +83,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_Street(), STREET_2);
     }
 
+    /**
+     * Tests that prompt_City returns the correct value.
+     */
     @Test
     void prompt_City() {
         String CITY_1 = "City Name";
@@ -78,6 +99,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_City(), CITY_2);
     }
 
+    /**
+     * Tests that prompt_State returns the correct value.
+     */
     @Test
     void prompt_State() {
         String STATE_1 = "California";
@@ -91,6 +115,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_State(), STATE_2);
     }
 
+    /**
+     * Tests that prompt_Zip returns the correct value.
+     */
     @Test
     void prompt_Zip() {
         int ZIP_1 = 42069;
@@ -107,6 +134,9 @@ public class MenuTest {
         Assertions.assertThrows(NumberFormatException.class, menu::prompt_Zip);
     }
 
+    /**
+     * Tests that prompt_Phone returns the correct value.
+     */
     @Test
     void prompt_phone() {
         String PHONE_1 = "555-789-5555";
@@ -120,6 +150,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_Phone(), PHONE_2);
     }
 
+    /**
+     * Tests that prompt_Email returns the correct value.
+     */
     @Test
     void prompt_Email() {
         String EMAIL_1 = "vpan2@horizon.csueastbay.edu";
@@ -133,6 +166,9 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_Email(), EMAIL_2);
     }
 
+    /**
+     * Tests that loadFIle adds the correct number of entries and the correct entries.
+     */
     @Test
     void option_LoadFile() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nfakeFile.txt".getBytes());
@@ -148,6 +184,9 @@ public class MenuTest {
         // Assertions.assertThrows(IOException.class, () -> menu.option_LoadFile(ab));
     }
 
+    /**
+     * Tests that addEntry adds the entries.
+     */
     @Test
     void option_AddEntry() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream("""
@@ -172,6 +211,9 @@ public class MenuTest {
         Assertions.assertEquals(2, ab.size());
     }
 
+    /**
+     * Tests that removeEntry lists the correct number of entries and removes the correct entries.
+     */
     @Test
     void option_RemoveEntry() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nGr\n2\nPan\n1\nG\n0".getBytes());
@@ -211,6 +253,9 @@ public class MenuTest {
         Assertions.assertThrows(NoSuchElementException.class, () -> menu.removeEntry(ab));
     }
 
+    /**
+     * Tests that findEntry finds the correct number of entries and the correct entries.
+     */
     @Test
     void option_FindEntry() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nG\nG".getBytes());
@@ -238,7 +283,7 @@ public class MenuTest {
     }
 
     /**
-     * Tests that listEntries.
+     * Tests that listEntries lists out the correct number of entries and the correct content.
      */
     @Test
     void option_ListEntries() {

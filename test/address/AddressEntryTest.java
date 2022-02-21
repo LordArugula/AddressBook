@@ -1,22 +1,64 @@
 package address;
 
+import address.data.AddressBook;
 import address.data.AddressEntry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests the {@link AddressEntry} class.
+ */
 class AddressEntryTest {
 
+    /**
+     * An empty {@link AddressEntry} used for tests.
+     */
     private AddressEntry emptyEntry;
+
+    /**
+     * A filled {@link AddressEntry} used for tests.
+     */
     private AddressEntry filledEntry;
 
+    /**
+     * The first name of the filledEntry.
+     */
     private final String FIRST_NAME = "Victor";
+
+    /**
+     * The last name of the filledEntry.
+     */
     private final String LAST_NAME = "Pan";
+
+    /**
+     * The street of the filledEntry.
+     */
     private final String STREET = "12345 Street Name";
+
+    /**
+     * The city of the filledEntry.
+     */
     private final String CITY = "City Name";
+
+    /**
+     * The state of the filledEntry.
+     */
     private final String STATE = "California";
+
+    /**
+     * The zip of the filledEntry.
+     */
     private final int ZIP = 42069;
+
+    /**
+     * The phone number of the filledEntry.
+     */
     private final String PHONE = "555-555-5555";
+
+    /**
+     * The email address of the filledEntry.
+     */
     private final String EMAIL = "vpan2@horizon.csueastbay.edu";
 
     /**

@@ -7,16 +7,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Tests the {@link AddressBook} class.
+ */
 public class AddressBookTest {
 
+    /**
+     * The {@link AddressBook} used for tests.
+     */
     private AddressBook ab;
+
+    /**
+     * The {@link AddressEntry} used for tests.
+     */
     private AddressEntry entry;
 
+    /**
+     * Initializes the {@link AddressBook} used for tests.
+     */
     @BeforeEach
     void setUp() {
         ab = new AddressBook();
@@ -24,6 +36,9 @@ public class AddressBookTest {
         ab.addEntry(entry);
     }
 
+    /**
+     * Tests that the size returns the correct value.
+     */
     @Test
     void size() {
         Assertions.assertEquals(1, ab.size());
@@ -37,6 +52,9 @@ public class AddressBookTest {
         Assertions.assertEquals(1, ab.size());
     }
 
+    /**
+     * Tests that loadFile adds the correct entries.
+     */
     @Test
     void loadFile() {
         Assertions.assertEquals(1, ab.size());
@@ -48,6 +66,9 @@ public class AddressBookTest {
         Assertions.assertDoesNotThrow(() -> ab.loadFile("resources/nonexistentFile.txt"));
     }
 
+    /**
+     * Tests that addEntry adds the entry, but does not add duplicate entries.
+     */
     @Test
     void addEntry() {
         Assertions.assertEquals(1, ab.size());
@@ -76,6 +97,9 @@ public class AddressBookTest {
         Assertions.assertEquals(newEntry, entry1Alias.get());
     }
 
+    /**
+     * Tests that removeEntry removes the right entry.
+     */
     @Test
     void removeEntry() {
         Assertions.assertEquals(1, ab.size());
@@ -87,6 +111,10 @@ public class AddressBookTest {
         Assertions.assertEquals(0, ab.size());
     }
 
+    /**
+     * Tests that findEntries returns a {@link Collection<>}
+     * of the {@link AddressEntry entries} that start with the last name.
+     */
     @Test
     void findEntries() {
         // Contains "Pan"
@@ -107,6 +135,10 @@ public class AddressBookTest {
         Assertions.assertTrue(entries.contains(entry.get()));
     }
 
+    /**
+     * Tests that listEntries lists all the {@link AddressEntry entries}
+     * sorted by last name then first name.
+     */
     @Test
     void listEntries() {
 
