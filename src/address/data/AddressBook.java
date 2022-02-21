@@ -3,6 +3,7 @@ package address.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The {@link AddressBook} contains a collection of {@link AddressEntry address entries}.
@@ -133,7 +134,7 @@ public class AddressBook {
      * @return A {@link List<AddressEntry>} of {@link AddressEntry address entries}
      * that start with last name.
      */
-    public List<AddressEntry> findEntries(String lastName) {
+    public Collection<AddressEntry> findEntries(String lastName) {
         return entries.stream()
                 .filter(e -> e.getLastName().startsWith(lastName))
                 .toList();

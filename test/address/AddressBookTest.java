@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 public class AddressBookTest {
@@ -55,7 +55,7 @@ public class AddressBookTest {
         Assertions.assertEquals(2, ab.size());
 
         // Check that newEntry was added
-        List<AddressEntry> entries = ab.findEntries(newEntry.getLastName());
+        Collection<AddressEntry> entries = ab.findEntries(newEntry.getLastName());
         Assertions.assertEquals(1, entries.size());
         Optional<AddressEntry> entry1Alias = entries.stream().findFirst();
         Assertions.assertTrue(entry1Alias.isPresent());
@@ -77,8 +77,9 @@ public class AddressBookTest {
     void removeEntry() {
         Assertions.assertEquals(1, ab.size());
 
-        List<AddressEntry> entries = ab.findEntries(entry.getLastName());
+        Collection<AddressEntry> entries = ab.findEntries(entry.getLastName());
         Optional<AddressEntry> pan = entries.stream().findFirst();
+        Assertions.assertTrue(pan.isPresent());
         Assertions.assertTrue(ab.removeEntry(pan.get()));
         Assertions.assertEquals(0, ab.size());
     }
@@ -86,7 +87,7 @@ public class AddressBookTest {
     @Test
     void findEntries() {
         // Contains "Pan"
-        List<AddressEntry> entries = ab.findEntries(entry.getLastName());
+        Collection<AddressEntry> entries = ab.findEntries(entry.getLastName());
         Assertions.assertEquals(1, entries.size());
         Optional<AddressEntry> entry = entries.stream().findFirst();
         Assertions.assertTrue(entry.isPresent());
