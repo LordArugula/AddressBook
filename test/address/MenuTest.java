@@ -1,12 +1,29 @@
 package address;
 
+import address.data.AddressBook;
+import address.data.AddressEntry;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MenuTest {
+
+    private AddressBook ab;
+
+    @BeforeEach
+    void setUp() {
+        ab = new AddressBook();
+        AddressEntry entry = new AddressEntry("Victor", "Pan", "12345 Street", "City", "CA", 12345, "555-555-5555", "vpan2@horizon.csueastbay.edu");
+        ab.addEntry(entry);
+    }
 
     @Test
     void prompt_FirstName() {
@@ -114,5 +131,100 @@ public class MenuTest {
         Assertions.assertEquals(menu.prompt_Email(), EMAIL_1);
 
         Assertions.assertEquals(menu.prompt_Email(), EMAIL_2);
+    }
+
+    @Test
+    void option_LoadFile() {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nfakeFile.txt".getBytes());
+
+        Menu menu = new Menu(new Scanner(inputStream));
+
+        Assertions.assertEquals(1, ab.size());
+        menu.option_LoadFile(ab);
+        Assertions.assertEquals(3, ab.size());
+
+        // Non existent file
+        menu.option_LoadFile(ab);
+        // Assertions.assertThrows(IOException.class, () -> menu.option_LoadFile(ab));
+    }
+
+    @Test
+    void option_AddEntry() {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("""
+                Vincent
+                Pan
+                12345 Street
+                City
+                State
+                12345
+                555-420-6969
+                test@test.com
+                """.getBytes());
+
+        Menu menu = new Menu(new Scanner(inputStream));
+
+        Assertions.assertEquals(1, ab.size());
+        menu.option_AddEntry(ab);
+        Assertions.assertEquals(2, ab.size());
+
+        // no input
+        Assertions.assertThrows(NoSuchElementException.class, () -> menu.option_AddEntry(ab));
+        Assertions.assertEquals(2, ab.size());
+    }
+
+    @Test
+    void option_RemoveEntry() {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nGr\n0\nPan\n0".getBytes());
+
+        Menu menu = new Menu(new Scanner(inputStream));
+
+        menu.option_LoadFile(ab);
+
+        Assertions.assertEquals(3, ab.size());
+        menu.option_RemoveEntry(ab);
+        Assertions.assertEquals(2, ab.size());
+
+        Collection<AddressEntry> entries = ab.findEntries("G");
+        Assertions.assertEquals(1, entries.size());
+        Optional<AddressEntry> entry = entries.stream().findFirst();
+        Assertions.assertTrue(entry.isPresent());
+        Assertions.assertEquals("Lynne", entry.get().getFirstName());
+
+        // no longer exists
+        menu.option_RemoveEntry(ab);
+        Assertions.assertEquals(1, ab.size());
+
+        // no input
+        Assertions.assertThrows(NoSuchElementException.class, () -> menu.option_RemoveEntry(ab));
+    }
+
+    @Test
+    void option_FindEntry() {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nG\nG".getBytes());
+
+        Menu menu = new Menu(new Scanner(inputStream));
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintStream old = System.out;
+        System.setOut(new PrintStream(stream));
+
+        menu.option_FindEntry(ab);
+
+        System.out.flush();
+
+        String list = "Last Name:\r\nNo address entries.\r\n";
+        Assertions.assertEquals(list, stream.toString());
+
+        menu.option_LoadFile(ab);
+
+        System.out.flush();
+        System.setOut(old);
+
+        Assertions.assertNotEquals(list, stream.toString());
+
+    }
+
+    @Test
+    void option_ListEntries() {
     }
 }
