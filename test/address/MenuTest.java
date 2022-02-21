@@ -237,9 +237,12 @@ public class MenuTest {
 
     }
 
+    /**
+     * Tests that listEntries.
+     */
     @Test
     void option_ListEntries() {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt\nG\nG".getBytes());
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("resources/AddressInputDataFile.txt".getBytes());
 
         Menu menu = new Menu(new Scanner(inputStream));
 
@@ -251,8 +254,21 @@ public class MenuTest {
         menu.listEntries(ab);
 
         System.out.flush();
-        System.setOut(old);
 
         Assertions.assertEquals("1: Victor Pan\n12345 Street\nCity, CA 12345\n555-555-5555\nvpan2@horizon.csueastbay.edu\n\r\n", stream.toString());
+
+        menu.loadFile(ab);
+        System.out.flush();
+
+        menu.listEntries(ab);
+
+        System.out.flush();
+        System.setOut(old);
+
+        Assertions.assertEquals("1: Victor Pan\n12345 Street\nCity, CA 12345\n555-555-5555\nvpan2@horizon.csueastbay.edu\n\r\n"+
+                "Enter a file name:\r\n" +
+                "1: Butch Grewe\nBay Avenue\nCapitoal, Ca 99999\n415-389-1239\nbg@gmail.com\n\r\n" +
+                "2: Lynne Grewe\n123 3rd Ave\nHayward, Ca 28666\n510-885-4167\nlynne.grewe@csueastbay.edu\n\r\n" +
+                "3: Victor Pan\n12345 Street\nCity, CA 12345\n555-555-5555\nvpan2@horizon.csueastbay.edu\n\r\n", stream.toString());
     }
 }
