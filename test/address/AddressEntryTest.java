@@ -19,26 +19,39 @@ class AddressEntryTest {
     private final String PHONE = "555-555-5555";
     private final String EMAIL = "vpan2@horizon.csueastbay.edu";
 
+    /**
+     * Initializes, before each test, two {@link  AddressEntry address entries}, one empty
+     * and the other filled.
+     */
     @BeforeEach
     void setUp() {
         emptyEntry = new AddressEntry();
         filledEntry = new AddressEntry(FIRST_NAME, LAST_NAME, STREET, CITY, STATE, ZIP, PHONE, EMAIL);
     }
 
+    /**
+     * Tests that getFirstName returns the correct value.
+     */
     @Test
     void getFirstName() {
         Assertions.assertNull(emptyEntry.getFirstName());
-        Assertions.assertEquals(filledEntry.getFirstName(), FIRST_NAME);
+        Assertions.assertEquals(FIRST_NAME, filledEntry.getFirstName());
+
+        emptyEntry.setFirstName("Mars");
+        Assertions.assertEquals("Mars", emptyEntry.getFirstName());
     }
 
+    /**
+     * Tests that setFirstName changes the firstName.
+     */
     @Test
     void setFirstName() {
         Assertions.assertNull(emptyEntry.getFirstName());
         emptyEntry.setFirstName(FIRST_NAME);
         Assertions.assertNotNull(emptyEntry.getFirstName());
-        Assertions.assertEquals(emptyEntry.getFirstName(), FIRST_NAME);
+        Assertions.assertEquals(FIRST_NAME, emptyEntry.getFirstName());
 
-        Assertions.assertEquals(filledEntry.getFirstName(), FIRST_NAME);
+        Assertions.assertEquals(FIRST_NAME, filledEntry.getFirstName());
         filledEntry.setFirstName(null);
         Assertions.assertNull(filledEntry.getFirstName());
 
@@ -47,12 +60,21 @@ class AddressEntryTest {
         Assertions.assertEquals(emptyEntry.getFirstName(), NEW_NAME);
     }
 
+    /**
+     * Tests that getLastName returns the correct value.
+     */
     @Test
     void getLastName() {
         Assertions.assertNull(emptyEntry.getLastName());
-        Assertions.assertEquals(filledEntry.getLastName(), LAST_NAME);
+        Assertions.assertEquals(LAST_NAME, filledEntry.getLastName());
+
+        emptyEntry.setLastName("Last");
+        Assertions.assertEquals("Last", emptyEntry.getLastName());
     }
 
+    /**
+     * Tests that setLastName changes the lastName.
+     */
     @Test
     void setLastName() {
         Assertions.assertNull(emptyEntry.getLastName());
@@ -69,12 +91,22 @@ class AddressEntryTest {
         Assertions.assertEquals(emptyEntry.getLastName(), NEW_NAME);
     }
 
+    /**
+     * Tests that getStreet returns the correct value.
+     */
     @Test
     void getStreet() {
         Assertions.assertNull(emptyEntry.getStreet());
         Assertions.assertEquals(filledEntry.getStreet(), STREET);
+
+        String street = "23 Street Name";
+        emptyEntry.setStreet(street);
+        Assertions.assertEquals(street, emptyEntry.getStreet());
     }
 
+    /**
+     * Tests that setStreet changes the street.
+     */
     @Test
     void setStreet() {
         Assertions.assertNull(emptyEntry.getStreet());
@@ -91,12 +123,22 @@ class AddressEntryTest {
         Assertions.assertEquals(emptyEntry.getStreet(), NEW_STREET);
     }
 
+    /**
+     * Tests that getCity returns the correct value.
+     */
     @Test
     void getCity() {
         Assertions.assertNull(emptyEntry.getCity());
         Assertions.assertEquals(filledEntry.getCity(), CITY);
+
+        String city = "Fremont";
+        emptyEntry.setCity(city);
+        Assertions.assertEquals(city, emptyEntry.getCity());
     }
 
+    /**
+     * Tests that setCity changes the city.
+     */
     @Test
     void setCity() {
         Assertions.assertNull(emptyEntry.getCity());
@@ -113,12 +155,22 @@ class AddressEntryTest {
         Assertions.assertEquals(emptyEntry.getCity(), NEW_CITY);
     }
 
+    /**
+     * Tests that getCity returns the correct value.
+     */
     @Test
     void getState() {
         Assertions.assertNull(emptyEntry.getState());
         Assertions.assertEquals(filledEntry.getState(), STATE);
+
+        String state = "CA";
+        emptyEntry.setState(state);
+        Assertions.assertEquals(state, emptyEntry.getState());
     }
 
+    /**
+     * Tests that setState changes the state.
+     */
     @Test
     void setState() {
         Assertions.assertNull(emptyEntry.getState());
@@ -135,12 +187,22 @@ class AddressEntryTest {
         Assertions.assertEquals(emptyEntry.getState(), NEW_STATE);
     }
 
+    /**
+     * Tests that getZip returns the correct value.
+     */
     @Test
     void getZip() {
         Assertions.assertEquals(0, emptyEntry.getZip());
         Assertions.assertEquals(filledEntry.getZip(), ZIP);
+
+        int zip = 69420;
+        emptyEntry.setZip(zip);
+        Assertions.assertEquals(zip, emptyEntry.getZip());
     }
 
+    /**
+     * Tests that setZip changes the zip.
+     */
     @Test
     void setZip() {
         Assertions.assertEquals(emptyEntry.getZip(), 0);
@@ -153,12 +215,22 @@ class AddressEntryTest {
         Assertions.assertEquals(filledEntry.getZip(), NEW_ZIP);
     }
 
+    /**
+     * Tests that getPhone returns the correct value.
+     */
     @Test
     void getPhone() {
         Assertions.assertNull(emptyEntry.getPhone());
         Assertions.assertEquals(filledEntry.getPhone(), PHONE);
+
+        String phone = "555-420-6969";
+        emptyEntry.setPhone(phone);
+        Assertions.assertEquals(phone, emptyEntry.getPhone());
     }
 
+    /**
+     * Tests that setPhone changes the phone.
+     */
     @Test
     void setPhone() {
         Assertions.assertNull(emptyEntry.getPhone());
@@ -175,12 +247,22 @@ class AddressEntryTest {
         Assertions.assertEquals(emptyEntry.getPhone(), NEW_PHONE);
     }
 
+    /**
+     * Tests that getEmail returns the correct value.
+     */
     @Test
     void getEmail() {
         Assertions.assertNull(emptyEntry.getEmail());
         Assertions.assertEquals(filledEntry.getEmail(), EMAIL);
+
+        String email = "test@test.com";
+        emptyEntry.setEmail(email);
+        Assertions.assertEquals(email, emptyEntry.getEmail());
     }
 
+    /**
+     * Tests that setEmail changes the email.
+     */
     @Test
     void setEmail() {
         Assertions.assertNull(emptyEntry.getEmail());
