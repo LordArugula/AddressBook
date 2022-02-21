@@ -77,6 +77,11 @@ public class AddressBook {
         return entries.size();
     }
 
+    /**
+     * Loads {@link AddressEntry entries} from a file at the given filePath.
+     *
+     * @param filePath The file path of the text file.
+     */
     public void loadFile(String filePath) {
         try {
             File file = new File(filePath);
@@ -99,20 +104,45 @@ public class AddressBook {
         }
     }
 
-    public void addEntry(AddressEntry entry) {
-        entries.add(entry);
+    /**
+     * Adds an {@link AddressEntry} to the {@link AddressBook}.
+     * Entries with a duplicate first and last name are not added.
+     *
+     * @param entry The {@link AddressEntry} to add to this {@link AddressBook}.
+     * @return True if the entry was added to the {@link AddressBook}.
+     */
+    public boolean addEntry(AddressEntry entry) {
+        return entries.add(entry);
     }
 
+    /**
+     * Removes the {@link AddressEntry} from the {@link AddressBook}.
+     *
+     * @param entry The {@link AddressEntry} to remove.
+     * @return True if the addressEntry was removed.
+     */
     public boolean removeEntry(AddressEntry entry) {
         return entries.remove(entry);
     }
 
+    /**
+     * Finds {@link AddressEntry address entries} that have a matching
+     * lastName from the {@link AddressBook}.
+     *
+     * @param lastName The last name of the entry.
+     * @return A {@link List<AddressEntry>} of {@link AddressEntry address entries}
+     * that start with last name.
+     */
     public List<AddressEntry> findEntries(String lastName) {
         return entries.stream()
                 .filter(e -> e.getLastName().startsWith(lastName))
                 .toList();
     }
 
+    /**
+     * Prints each {@link AddressEntry} in this {@link AddressBook}
+     * in sorted by last name, then first name.
+     */
     public void listEntries() {
         int i = 1;
         StringBuilder stringBuilder = new StringBuilder(255);
@@ -130,6 +160,7 @@ public class AddressBook {
                     .append('\n');
 
             System.out.println(stringBuilder.toString());
+            // clearing the string builder
             stringBuilder.delete(0, stringBuilder.length());
             i++;
         }
