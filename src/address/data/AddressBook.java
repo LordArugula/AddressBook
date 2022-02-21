@@ -96,7 +96,7 @@ public class AddressBook {
                 String email = scanner.nextLine();
                 String phone = scanner.nextLine();
 
-                addEntry(new AddressEntry(firstName, lastName, street, city, state, Integer.parseInt(zip), email, phone));
+                addEntry(new AddressEntry(firstName, lastName, street, city, state, Integer.parseInt(zip), phone, email));
             }
             scanner.close();
         } catch (IOException e) {
