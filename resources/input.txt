@@ -1,0 +1,40 @@
+Victor
+Pan
+12345 Chicken St
+Fremont
+CA
+54321
+vpan2@horizon.csueastbay.edu
+555-123-4567
+Matt
+Rozz
+518 Kupo St
+Hayward
+CA
+54321
+mrozz@gmail.com
+555-987-6543
+Natalie
+Kyun
+7th Ave
+Hayward
+CA
+84213
+nkyun@gmail.com
+555-752-4123
+Lance
+Alot
+88 Tank St
+Fremont
+CA
+90331
+lalot@gmail.com
+555-420-6969
+Anna
+Greene
+14 Garden St
+Fremont
+CA
+31235
+agreene@gmail.com
+555-146-4505
