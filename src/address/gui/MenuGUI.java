@@ -178,11 +178,8 @@ public class MenuGUI extends JFrame {
         showAddressEntryForm(selectedEntry, "Edit Entry", "Cancel Changes");
     }
 
-    private boolean isCreatingNewEntry;
-
     private void onRequestNewEntry(ActionEvent evt) {
         selectedEntry = new AddressEntry();
-        isCreatingNewEntry = true;
         showAddressEntryForm(selectedEntry, "Create New", "Cancel");
     }
 
@@ -227,6 +224,8 @@ public class MenuGUI extends JFrame {
             return;
         }
 
+        ab.removeEntry(selectedEntry);
+
         selectedEntry.setFirstName(firstName);
         selectedEntry.setLastName(lastName);
         selectedEntry.setStreet(street);
@@ -236,16 +235,14 @@ public class MenuGUI extends JFrame {
         selectedEntry.setPhone(phone);
         selectedEntry.setEmail(email);
 
-        if (isCreatingNewEntry) {
-            ab.addEntry(selectedEntry);
-            addressEntryForm.setVisible(false);
-            isCreatingNewEntry = false;
-        }
+        ab.addEntry(selectedEntry);
+        addressEntryForm.setVisible(false);
+
+        selectedEntry = null;
     }
 
     private void onCancelEntry(ActionEvent evt) {
         addressEntryForm.setVisible(false);
-        isCreatingNewEntry = false;
         selectedEntry = null;
     }
 
