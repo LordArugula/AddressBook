@@ -7,7 +7,6 @@ import address.data.AddressEntry;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Defines the GUI for the {@link AddressBookApplication}.
@@ -37,6 +36,11 @@ public class MenuGUI extends JFrame {
      * The scroll pane to view {@link AddressEntry address entries}.
      */
     private JScrollPane scrollPane;
+
+    /**
+     * The view for the scroll pane.
+     */
+    private JList<AddressEntry> addressEntryJList;
 
     /**
      * The text field for the first name.
@@ -125,21 +129,16 @@ public class MenuGUI extends JFrame {
         add(root);
         addressEntryForm.setVisible(false);
 
-        newButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                addressEntryForm.setVisible(true);
-                submitButton.setText("Add Entry");
-                cancelButton.setText("Cancel");
-            }
-        });
+        addressEntryJList = new JList<AddressEntry>();
+        addressEntryJList.setCellRenderer(new AddressEntryCellRenderer());
+        scrollPane.setViewportView(addressEntryJList);
+        displayButton.addActionListener(this::onDisplayEntries);
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                addressEntryForm.setVisible(false);
-            }
-        });
+        newButton.addActionListener(this::onRequestNewEntry);
+
+        submitButton.addActionListener(this::onSubmitEntry);
+
+        cancelButton.addActionListener(this::onCancelEntry);
     }
 
     /**
@@ -158,5 +157,48 @@ public class MenuGUI extends JFrame {
      */
     public void setAddressBook(AddressBook ab) {
         this.ab = ab;
+    }
+
+    private void onDisplayEntries(ActionEvent evt) {
+        addressEntryJList.setListData((ab.getEntries()).toArray(new AddressEntry[0]));
+    }
+
+    private void onRequestNewEntry(ActionEvent evt) {
+        addressEntryForm.setVisible(true);
+        submitButton.setText("Add Entry");
+        cancelButton.setText("Cancel");
+    }
+
+    private void onSubmitEntry(ActionEvent evt) {
+        String firstName = firstNameInput.getText();
+        if (firstName == null || firstName.isBlank()) {
+
+        }
+
+        String lastName = lastNameInput.getText();
+        if (lastName == null) {
+
+        }
+
+        String street = streetInput.getText();
+        String city = cityInput.getText();
+        String state = stateInput.getText();
+        String zip = zipInput.getText();
+        String phone = phoneInput.getText();
+        String email = emailInput.getText();
+
+        int zipcode;
+        try {
+            zipcode = Integer.parseInt(zip);
+        } catch (NumberFormatException ex) {
+            // Give error
+            return;
+        }
+
+        ab.addEntry(new AddressEntry(firstName, lastName, street, city, state, zipcode, phone, email));
+    }
+
+    private void onCancelEntry(ActionEvent evt) {
+        addressEntryForm.setVisible(false);
     }
 }

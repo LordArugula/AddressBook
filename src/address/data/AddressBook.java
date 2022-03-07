@@ -150,6 +150,17 @@ public class AddressBook {
     }
 
     /**
+     * Returns a collection containing the {@link AddressEntry entries}
+     * in this {@link AddressBook}.
+     *
+     * @return a collection containing the {@link AddressEntry entries}
+     * in this {@link AddressBook}.
+     */
+    public Collection<AddressEntry> getEntries() {
+        return entries;
+    }
+
+    /**
      * Prints each {@link AddressEntry} in entries
      * in order by last name, then first name.
      *
