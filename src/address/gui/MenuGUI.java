@@ -34,12 +34,16 @@ public class MenuGUI extends JFrame {
      * The scroll pane to view {@link AddressEntry address entries}.
      */
     private JScrollPane scrollPane;
-
-    /**
-     * The panel to contain the address entry form.
-     * This is shown when adding a new {@link AddressEntry}.
-     */
-    private JPanel entryFormContainer;
+    private JTextField firstNameInput;
+    private JTextField lastNameInput;
+    private JTextField streetInput;
+    private JTextField cityInput;
+    private JTextField stateInput;
+    private JTextField zipInput;
+    private JTextField phoneInput;
+    private JTextField emailInput;
+    private JButton submitButton;
+    private JPanel addressEntryForm;
 
     /**
      * The {@link AddressBook}.
@@ -48,6 +52,7 @@ public class MenuGUI extends JFrame {
 
     /**
      * Initializes a {@link MenuGUI} with an {@link AddressBook}.
+     *
      * @param ab The {@link AddressBook} to use with the {@link MenuGUI}.
      */
     public MenuGUI(AddressBook ab) {
@@ -72,6 +77,7 @@ public class MenuGUI extends JFrame {
 
     /**
      * Gets the {@link AddressBook}.
+     *
      * @return the {@link AddressBook}.
      */
     public AddressBook getAddressBook() {
@@ -80,6 +86,7 @@ public class MenuGUI extends JFrame {
 
     /**
      * Sets the {@link AddressBook}.
+     *
      * @param ab The {@link AddressBook}.
      */
     public void setAddressBook(AddressBook ab) {
