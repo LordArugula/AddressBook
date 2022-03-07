@@ -142,6 +142,8 @@ public class MenuGUI extends JFrame {
         submitButton.addActionListener(this::onSubmitEntry);
 
         cancelButton.addActionListener(this::onCancelEntry);
+
+        removeButton.addActionListener(this::onRemoveSelectedEntry);
     }
 
     /**
@@ -170,11 +172,18 @@ public class MenuGUI extends JFrame {
 
     private void onSelectEntry(ListSelectionEvent e) {
         selectedEntry = addressEntryJList.getSelectedValue();
+        if (selectedEntry == null) {
+            return;
+        }
         showAddressEntryForm(selectedEntry, "Edit Entry", "Cancel Changes");
     }
 
+    private boolean isCreatingNewEntry;
+
     private void onRequestNewEntry(ActionEvent evt) {
-        showAddressEntryForm(new AddressEntry(), "Create New", "Cancel");
+        selectedEntry = new AddressEntry();
+        isCreatingNewEntry = true;
+        showAddressEntryForm(selectedEntry, "Create New", "Cancel");
     }
 
     private void showAddressEntryForm(AddressEntry entry, String submitText, String cancelText) {
@@ -195,12 +204,12 @@ public class MenuGUI extends JFrame {
     private void onSubmitEntry(ActionEvent evt) {
         String firstName = firstNameInput.getText();
         if (firstName == null || firstName.isBlank()) {
-
+            return;
         }
 
         String lastName = lastNameInput.getText();
         if (lastName == null) {
-
+            return;
         }
 
         String street = streetInput.getText();
@@ -218,10 +227,33 @@ public class MenuGUI extends JFrame {
             return;
         }
 
-        ab.addEntry(new AddressEntry(firstName, lastName, street, city, state, zipcode, phone, email));
+        selectedEntry.setFirstName(firstName);
+        selectedEntry.setLastName(lastName);
+        selectedEntry.setStreet(street);
+        selectedEntry.setCity(city);
+        selectedEntry.setState(state);
+        selectedEntry.setZip(zipcode);
+        selectedEntry.setPhone(phone);
+        selectedEntry.setEmail(email);
+
+        if (isCreatingNewEntry) {
+            ab.addEntry(selectedEntry);
+            addressEntryForm.setVisible(false);
+            isCreatingNewEntry = false;
+        }
     }
 
     private void onCancelEntry(ActionEvent evt) {
         addressEntryForm.setVisible(false);
+        isCreatingNewEntry = false;
+        selectedEntry = null;
+    }
+
+    private void onRemoveSelectedEntry(ActionEvent evt) {
+        if (selectedEntry == null) {
+            return;
+        }
+
+        ab.removeEntry(selectedEntry);
     }
 }
