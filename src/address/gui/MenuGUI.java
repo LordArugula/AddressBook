@@ -34,15 +34,61 @@ public class MenuGUI extends JFrame {
      * The scroll pane to view {@link AddressEntry address entries}.
      */
     private JScrollPane scrollPane;
+
+    /**
+     * The text field for the first name.
+     */
     private JTextField firstNameInput;
+
+    /**
+     * The text field for the last name.
+     */
     private JTextField lastNameInput;
+
+    /**
+     * The text field for the street.
+     */
     private JTextField streetInput;
+
+    /**
+     * The text field for the city.
+     */
     private JTextField cityInput;
+
+    /**
+     * The text field for the state.
+     */
     private JTextField stateInput;
+
+    /**
+     * The text field for the zip code.
+     */
     private JTextField zipInput;
+
+    /**
+     * The text field for the phone number.
+     */
     private JTextField phoneInput;
+
+    /**
+     * The text field for the email address.
+     */
     private JTextField emailInput;
+
+    /**
+     * The button to submit changes to the {@link AddressEntry}.
+     */
     private JButton submitButton;
+
+
+    /**
+     * The button to cancels changes to the {@link AddressEntry}.
+     */
+    private JButton cancelButton;
+
+    /**
+     * The container for the {@link AddressEntry} input fields.
+     */
     private JPanel addressEntryForm;
 
     /**
