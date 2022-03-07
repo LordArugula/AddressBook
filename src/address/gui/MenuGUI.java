@@ -5,6 +5,9 @@ import address.data.AddressBook;
 import address.data.AddressEntry;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Defines the GUI for the {@link AddressBookApplication}.
@@ -114,6 +117,7 @@ public class MenuGUI extends JFrame {
         setTitle("Address Book Application");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        setMinimumSize(new Dimension(400, 400));
         setSize(640, 480);
         setLocationRelativeTo(null);
         setDefaultLookAndFeelDecorated(false);
@@ -123,7 +127,7 @@ public class MenuGUI extends JFrame {
 
         newButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent evt) {
                 addressEntryForm.setVisible(true);
                 submitButton.setText("Add Entry");
                 cancelButton.setText("Cancel");
@@ -132,7 +136,7 @@ public class MenuGUI extends JFrame {
 
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent evt) {
                 addressEntryForm.setVisible(false);
             }
         });
