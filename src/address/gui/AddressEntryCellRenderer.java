@@ -39,7 +39,7 @@ public class AddressEntryCellRenderer implements ListCellRenderer<AddressEntry> 
      */
     @Override
     public Component getListCellRendererComponent(JList<? extends AddressEntry> list, AddressEntry value, int index, boolean isSelected, boolean cellHasFocus) {
-        addressEntryGUI.setText(value.getLastName() + ", " + value.getFirstName());
+        addressEntryGUI.setText((index + 1) + "    " + value.getLastName() + ", " + value.getFirstName());
         if (isSelected) {
             addressEntryGUI.getRoot().setBackground(selectedColor);
         } else {
