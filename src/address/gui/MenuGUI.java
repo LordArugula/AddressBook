@@ -5,6 +5,7 @@ import address.data.AddressBook;
 import address.data.AddressEntry;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -130,7 +131,9 @@ public class MenuGUI extends JFrame {
         addressEntryForm.setVisible(false);
 
         addressEntryJList = new JList<AddressEntry>();
+        addressEntryJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addressEntryJList.setCellRenderer(new AddressEntryCellRenderer());
+        addressEntryJList.addListSelectionListener(this::onSelectEntry);
         scrollPane.setViewportView(addressEntryJList);
         displayButton.addActionListener(this::onDisplayEntries);
 
@@ -163,10 +166,30 @@ public class MenuGUI extends JFrame {
         addressEntryJList.setListData((ab.getEntries()).toArray(new AddressEntry[0]));
     }
 
+    private AddressEntry selectedEntry;
+
+    private void onSelectEntry(ListSelectionEvent e) {
+        selectedEntry = addressEntryJList.getSelectedValue();
+        showAddressEntryForm(selectedEntry, "Edit Entry", "Cancel Changes");
+    }
+
     private void onRequestNewEntry(ActionEvent evt) {
+        showAddressEntryForm(new AddressEntry(), "Create New", "Cancel");
+    }
+
+    private void showAddressEntryForm(AddressEntry entry, String submitText, String cancelText) {
         addressEntryForm.setVisible(true);
-        submitButton.setText("Add Entry");
-        cancelButton.setText("Cancel");
+        submitButton.setText(submitText);
+        cancelButton.setText(cancelText);
+
+        firstNameInput.setText(entry.getFirstName());
+        lastNameInput.setText(entry.getLastName());
+        streetInput.setText(entry.getStreet());
+        cityInput.setText(entry.getCity());
+        stateInput.setText(entry.getState());
+        zipInput.setText(entry.getZip() == 0 ? "" : Integer.toString(entry.getZip()));
+        phoneInput.setText(entry.getPhone());
+        emailInput.setText(entry.getEmail());
     }
 
     private void onSubmitEntry(ActionEvent evt) {
