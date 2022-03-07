@@ -119,6 +119,23 @@ public class MenuGUI extends JFrame {
         setDefaultLookAndFeelDecorated(false);
 
         add(root);
+        addressEntryForm.setVisible(false);
+
+        newButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addressEntryForm.setVisible(true);
+                submitButton.setText("Add Entry");
+                cancelButton.setText("Cancel");
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addressEntryForm.setVisible(false);
+            }
+        });
     }
 
     /**
