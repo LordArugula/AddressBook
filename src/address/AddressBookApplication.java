@@ -2,6 +2,9 @@ package address;
 
 import address.data.AddressBook;
 import address.data.AddressEntry;
+import address.gui.MenuGUI;
+
+import javax.swing.*;
 
 /**
  * AddressBookApplication is the entry point of the application and
@@ -21,13 +24,14 @@ public class AddressBookApplication {
         AddressBook ab = new AddressBook();
         initAddressBook(ab, filePath);
 
-        Menu menu = new Menu();
-        boolean shouldQuit;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-        do {
-            shouldQuit = menu.promptMenu(ab);
-
-        } while (!shouldQuit);
+                var frame = new MenuGUI(ab);
+                frame.setVisible(true);
+            }
+        });
     }
 
     /**
