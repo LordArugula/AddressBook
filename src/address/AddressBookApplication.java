@@ -26,7 +26,7 @@ public class AddressBookApplication {
 
         AddressBook ab = new AddressBook();
         initAddressBook(ab, filePath);
-        
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

@@ -6,7 +6,6 @@ import address.data.AddressEntry;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -98,11 +97,18 @@ public class MenuGUI {
      * The container for the {@link AddressEntry} input fields.
      */
     private JPanel addressEntryForm;
+    private JPanel firstNameField;
+    private JPanel lastNameField;
 
     /**
      * The {@link AddressBook}.
      */
     private AddressBook ab;
+
+    /**
+     * The currently selected {@link AddressEntry}.
+     */
+    private AddressEntry selectedEntry;
 
     /**
      * Initializes a {@link MenuGUI} with an {@link AddressBook}.
@@ -116,7 +122,7 @@ public class MenuGUI {
     }
 
     /**
-     * Initializes the GUI.
+     * Initializes the GUI and hooks up event handlers.
      */
     private void initUI() {
         addressEntryForm.setVisible(false);
@@ -155,17 +161,27 @@ public class MenuGUI {
         this.ab = ab;
     }
 
+    /**
+     * Called when the display button is pressed.
+     * @param evt The button event.
+     */
     private void onDisplayEntries(ActionEvent evt) {
         displayEntries();
     }
 
+    /**
+     * Displays a list of {@link AddressEntry address entries}
+     * sorted in alphabetical order by last name, then first name.
+     */
     private void displayEntries() {
         addressEntryJList.setListData((ab.getEntries()).toArray(new AddressEntry[0]));
     }
 
-    private AddressEntry selectedEntry;
-
-    private void onSelectEntry(ListSelectionEvent e) {
+    /**
+     * Called when an address entry is selected.
+     * @param evt The list selection event.
+     */
+    private void onSelectEntry(ListSelectionEvent evt) {
         selectedEntry = addressEntryJList.getSelectedValue();
         if (selectedEntry == null) {
             return;
@@ -173,6 +189,11 @@ public class MenuGUI {
         showAddressEntryForm(selectedEntry, "Edit Entry", "Cancel Changes");
     }
 
+    /**
+     * Called when the new button is pressed. Opens the
+     * {@link AddressEntry} form to create a new {@link AddressEntry}.
+     * @param evt The button event.
+     */
     private void onRequestNewEntry(ActionEvent evt) {
         removeSelection();
 
@@ -180,6 +201,12 @@ public class MenuGUI {
         showAddressEntryForm(selectedEntry, "Create New", "Cancel");
     }
 
+    /**
+     * Displays the {@link AddressEntry} form.
+     * @param entry The {@link AddressEntry} used to populate the form fields.
+     * @param submitText The text for the submit button.
+     * @param cancelText The text for the cancel button.
+     */
     private void showAddressEntryForm(AddressEntry entry, String submitText, String cancelText) {
         addressEntryForm.setVisible(true);
         submitButton.setText(submitText);
@@ -195,6 +222,11 @@ public class MenuGUI {
         emailInput.setText(entry.getEmail());
     }
 
+    /**
+     * Called when the submit button is pressed.
+     * Changes or creates an {@link AddressEntry}.
+     * @param evt The button event.
+     */
     private void onSubmitEntry(ActionEvent evt) {
         String firstName = firstNameInput.getText();
         if (firstName == null || firstName.isBlank()) {
@@ -237,15 +269,27 @@ public class MenuGUI {
         displayEntries();
     }
 
+    /**
+     * Called when the cancel button is pressed.
+     * Stops creating or editing an {@link AddressEntry}
+     * and closes the address entry form.
+     * @param evt The button event.
+     */
     private void onCancelEntry(ActionEvent evt) {
         hideAddressEntryForm();
     }
 
+    /**
+     * Closes the {@link AddressEntry} form.
+     */
     private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
         removeSelection();
     }
 
+    /**
+     * Clears the selected {@link AddressEntry}.
+     */
     private void removeSelection() {
         addressEntryJList.setSelectedValue(null, false);
     }
