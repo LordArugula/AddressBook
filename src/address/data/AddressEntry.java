@@ -55,6 +55,7 @@ public class AddressEntry {
 
     /**
      * Creates a complete {@link AddressEntry}.
+     *
      * @param firstName The first name.
      * @param lastName  The last name.
      * @param street    The street name.
@@ -217,5 +218,16 @@ public class AddressEntry {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    /**
+     * Returns a string representation of an {@link AddressEntry} containing
+     * each field of the {@link AddressEntry} on new lines.
+     *
+     * @return Returns a string representation of an {@link AddressEntry}.
+     */
+    @Override
+    public String toString() {
+        return firstName + '\n' + lastName + '\n' + street + '\n' + city + '\n' + state + '\n' + zip + '\n' + email + '\n' + phone;
     }
 }
