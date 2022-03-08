@@ -156,6 +156,10 @@ public class MenuGUI {
     }
 
     private void onDisplayEntries(ActionEvent evt) {
+        displayEntries();
+    }
+
+    private void displayEntries() {
         addressEntryJList.setListData((ab.getEntries()).toArray(new AddressEntry[0]));
     }
 
@@ -170,6 +174,8 @@ public class MenuGUI {
     }
 
     private void onRequestNewEntry(ActionEvent evt) {
+        removeSelection();
+
         selectedEntry = new AddressEntry();
         showAddressEntryForm(selectedEntry, "Create New", "Cancel");
     }
@@ -228,7 +234,7 @@ public class MenuGUI {
 
         ab.addEntry(selectedEntry);
         hideAddressEntryForm();
-        onDisplayEntries(null);
+        displayEntries();
     }
 
     private void onCancelEntry(ActionEvent evt) {
@@ -237,6 +243,10 @@ public class MenuGUI {
 
     private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
+        removeSelection();
+    }
+
+    private void removeSelection() {
         addressEntryJList.setSelectedValue(null, false);
     }
 
@@ -246,7 +256,7 @@ public class MenuGUI {
         }
 
         ab.removeEntry(selectedEntry);
-        onDisplayEntries(null);
+        displayEntries();
     }
 
     public JPanel getRoot() {
