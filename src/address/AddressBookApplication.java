@@ -25,7 +25,6 @@ public class AddressBookApplication {
         final String filePath = "resources/AddressInputDataFile.txt";
 
         AddressBook ab = new AddressBook();
-        initAddressBook(ab, filePath);
         initAddressBook(ab, "resources/input.txt");
 
         SwingUtilities.invokeLater(new Runnable() {
