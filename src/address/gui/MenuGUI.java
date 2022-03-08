@@ -227,14 +227,17 @@ public class MenuGUI {
         selectedEntry.setEmail(email);
 
         ab.addEntry(selectedEntry);
-        addressEntryForm.setVisible(false);
-
-        selectedEntry = null;
+        hideAddressEntryForm();
+        onDisplayEntries(null);
     }
 
     private void onCancelEntry(ActionEvent evt) {
+        hideAddressEntryForm();
+    }
+
+    private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
-        selectedEntry = null;
+        addressEntryJList.setSelectedValue(null, false);
     }
 
     private void onRemoveSelectedEntry(ActionEvent evt) {
@@ -243,6 +246,8 @@ public class MenuGUI {
         }
 
         ab.removeEntry(selectedEntry);
+        onDisplayEntries(null);
+    }
 
     public JPanel getRoot() {
         return root;
