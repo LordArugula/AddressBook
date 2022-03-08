@@ -22,10 +22,11 @@ public class AddressBookApplication {
      * @param args The input arguments.
      */
     public static void main(String[] args) {
-        final String filePath = "resources/input.txt";
+        final String filePath = "resources/AddressInputDataFile.txt";
 
         AddressBook ab = new AddressBook();
         initAddressBook(ab, filePath);
+        initAddressBook(ab, "resources/input.txt");
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
