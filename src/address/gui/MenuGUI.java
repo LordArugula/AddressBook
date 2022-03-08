@@ -234,7 +234,7 @@ public class MenuGUI {
         }
 
         String lastName = lastNameInput.getText();
-        if (lastName == null) {
+        if (lastName == null || lastName.isBlank()) {
             return;
         }
 
@@ -246,11 +246,16 @@ public class MenuGUI {
         String email = emailInput.getText();
 
         int zipcode;
-        try {
-            zipcode = Integer.parseInt(zip);
-        } catch (NumberFormatException ex) {
-            // Give error
-            return;
+
+        if (zip == null || zip.isBlank()) {
+            zipcode = 0;
+        } else {
+            try {
+                zipcode = Integer.parseInt(zip);
+            } catch (NumberFormatException ex) {
+                // Give error
+                return;
+            }
         }
 
         ab.removeEntry(selectedEntry);
