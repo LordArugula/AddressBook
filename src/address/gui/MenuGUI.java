@@ -127,7 +127,7 @@ public class MenuGUI {
     private void initUI() {
         addressEntryForm.setVisible(false);
 
-        addressEntryJList = new JList<AddressEntry>();
+        addressEntryJList = new JList<>();
         addressEntryJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addressEntryJList.setCellRenderer(new AddressEntryCellRenderer());
         addressEntryJList.addListSelectionListener(this::onSelectEntry);
@@ -163,6 +163,7 @@ public class MenuGUI {
 
     /**
      * Called when the display button is pressed.
+     *
      * @param evt The button event.
      */
     private void onDisplayEntries(ActionEvent evt) {
@@ -179,6 +180,7 @@ public class MenuGUI {
 
     /**
      * Called when an address entry is selected.
+     *
      * @param evt The list selection event.
      */
     private void onSelectEntry(ListSelectionEvent evt) {
@@ -192,10 +194,11 @@ public class MenuGUI {
     /**
      * Called when the new button is pressed. Opens the
      * {@link AddressEntry} form to create a new {@link AddressEntry}.
+     *
      * @param evt The button event.
      */
     private void onRequestNewEntry(ActionEvent evt) {
-        removeSelection();
+        clearSelection();
 
         selectedEntry = new AddressEntry();
         showAddressEntryForm(selectedEntry, "Create New", "Cancel");
@@ -203,7 +206,8 @@ public class MenuGUI {
 
     /**
      * Displays the {@link AddressEntry} form.
-     * @param entry The {@link AddressEntry} used to populate the form fields.
+     *
+     * @param entry      The {@link AddressEntry} used to populate the form fields.
      * @param submitText The text for the submit button.
      * @param cancelText The text for the cancel button.
      */
@@ -225,6 +229,7 @@ public class MenuGUI {
     /**
      * Called when the submit button is pressed.
      * Changes or creates an {@link AddressEntry}.
+     *
      * @param evt The button event.
      */
     private void onSubmitEntry(ActionEvent evt) {
@@ -234,7 +239,7 @@ public class MenuGUI {
         }
 
         String lastName = lastNameInput.getText();
-        if (lastName == null) {
+        if (lastName == null || lastName.isBlank()) {
             return;
         }
 
@@ -246,11 +251,16 @@ public class MenuGUI {
         String email = emailInput.getText();
 
         int zipcode;
-        try {
-            zipcode = Integer.parseInt(zip);
-        } catch (NumberFormatException ex) {
-            // Give error
-            return;
+
+        if (zip == null || zip.isBlank()) {
+            zipcode = 0;
+        } else {
+            try {
+                zipcode = Integer.parseInt(zip);
+            } catch (NumberFormatException ex) {
+                // Give error
+                return;
+            }
         }
 
         ab.removeEntry(selectedEntry);
@@ -273,6 +283,7 @@ public class MenuGUI {
      * Called when the cancel button is pressed.
      * Stops creating or editing an {@link AddressEntry}
      * and closes the address entry form.
+     *
      * @param evt The button event.
      */
     private void onCancelEntry(ActionEvent evt) {
@@ -284,13 +295,13 @@ public class MenuGUI {
      */
     private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
-        removeSelection();
+        clearSelection();
     }
 
     /**
      * Clears the selected {@link AddressEntry}.
      */
-    private void removeSelection() {
+    private void clearSelection() {
         addressEntryJList.setSelectedValue(null, false);
     }
 
@@ -301,6 +312,7 @@ public class MenuGUI {
 
         ab.removeEntry(selectedEntry);
         displayEntries();
+        hideAddressEntryForm();
     }
 
     public JPanel getRoot() {
