@@ -312,6 +312,7 @@ public class MenuGUI {
 
         ab.removeEntry(selectedEntry);
         displayEntries();
+        hideAddressEntryForm();
     }
 
     public JPanel getRoot() {
