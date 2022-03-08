@@ -5,13 +5,29 @@ import address.data.AddressEntry;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Renders the {@link AddressEntryGUI}.
+ */
 public class AddressEntryCellRenderer implements ListCellRenderer<AddressEntry> {
 
+    /**
+     * The {@link AddressEntryGUI}.
+     */
     private AddressEntryGUI addressEntryGUI;
 
+    /**
+     * The default background color of the {@link AddressEntryGUI}.
+     */
     private final Color defaultColor;
+
+    /**
+     * The background color of the {@link AddressEntryGUI} when it is selected.
+     */
     private final Color selectedColor;
 
+    /**
+     * Initializes the {@link AddressEntryCellRenderer}.
+     */
     public AddressEntryCellRenderer() {
         addressEntryGUI = new AddressEntryGUI("");
 
@@ -39,7 +55,7 @@ public class AddressEntryCellRenderer implements ListCellRenderer<AddressEntry> 
      */
     @Override
     public Component getListCellRendererComponent(JList<? extends AddressEntry> list, AddressEntry value, int index, boolean isSelected, boolean cellHasFocus) {
-        addressEntryGUI.setText((index + 1) + "    " + value.getLastName() + ", " + value.getFirstName());
+        addressEntryGUI.setText(value.getFirstName(), value.getLastName(), index);
         if (isSelected) {
             addressEntryGUI.getRoot().setBackground(selectedColor);
         } else {
