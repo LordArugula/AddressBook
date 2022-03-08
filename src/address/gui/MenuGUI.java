@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 /**
  * Defines the GUI for the {@link AddressBookApplication}.
  */
-public class MenuGUI extends JFrame {
+public class MenuGUI {
     /**
      * The root panel.
      */
@@ -119,15 +119,6 @@ public class MenuGUI extends JFrame {
      * Initializes the GUI.
      */
     private void initUI() {
-        setTitle("Address Book Application");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        setMinimumSize(new Dimension(400, 400));
-        setSize(640, 480);
-        setLocationRelativeTo(null);
-        setDefaultLookAndFeelDecorated(false);
-
-        add(root);
         addressEntryForm.setVisible(false);
 
         addressEntryJList = new JList<AddressEntry>();
@@ -252,5 +243,8 @@ public class MenuGUI extends JFrame {
         }
 
         ab.removeEntry(selectedEntry);
+
+    public JPanel getRoot() {
+        return root;
     }
 }
