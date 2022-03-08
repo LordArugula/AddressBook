@@ -5,6 +5,9 @@ import address.data.AddressEntry;
 import address.gui.MenuGUI;
 
 import javax.swing.*;
+import java.awt.*;
+
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  * AddressBookApplication is the entry point of the application and
@@ -23,12 +26,23 @@ public class AddressBookApplication {
 
         AddressBook ab = new AddressBook();
         initAddressBook(ab, filePath);
+        initAddressBook(ab, "resources/input.txt");
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                var frame = new JFrame();
+                MenuGUI menu = new MenuGUI(ab);
 
-                var frame = new MenuGUI(ab);
+                frame.setTitle("Address Book Application");
+                frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+                frame.setMinimumSize(new Dimension(360, 360));
+                frame.setSize(640, 480);
+                frame.setLocationRelativeTo(null);
+                frame.setDefaultLookAndFeelDecorated(false);
+
+                frame.add(menu.getRoot());
                 frame.setVisible(true);
             }
         });
