@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="AddressBookApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="address.AddressBookApplication" />
-    <module name="Address" />
+    <module name="AddressBook" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="address.*" />
