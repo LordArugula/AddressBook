@@ -25,55 +25,34 @@ public class AddressBookApplication {
      */
     public static void main(String[] args) {
 
-        try {
-            // Load the Oracle JDBC driver
-            DriverManager.registerDriver(new OracleDriver());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         AddressBook ab = new AddressBook();
 
-        if (args.length != 5) {
-            System.out.println("Invalid login. Could not connect to database.");
-            return;
-        }
-        String login = args[0];
-        String password = args[1];
-        String host = args[2];
-        String port = args[3];
-        String sid = args[4];
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:oracle:thin:" + host + ":" + port + "/" + sid, login, password);
+        if (args.length == 5) {
 
-            // Create a Statement
-            Statement stmt = conn.createStatement();
-
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM ADDRESSENTRYTABLE");
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("ID");
-                String firstName = resultSet.getString("FIRSTNAME");
-                String lastName = resultSet.getString("LASTNAME");
-                String street = resultSet.getString("STREET");
-                String city = resultSet.getString("CITY");
-                String state = resultSet.getString("STATE");
-                int zip = resultSet.getInt("ZIP");
-                String phone = resultSet.getString("PHONE");
-                String email = resultSet.getString("EMAIL");
-                AddressEntry entry = new AddressEntry(firstName, lastName, street, city, state, zip, phone, email);
-                entry.setId(id);
-                ab.addEntry(entry);
-                System.out.println(entry);
+            try {
+                // Load the Oracle JDBC driver
+                DriverManager.registerDriver(new OracleDriver());
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
-            resultSet.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            try {
+                String login = args[0];
+                String password = args[1];
+                String host = args[2];
+                String port = args[3];
+                String sid = args[4];
+                Connection conn = DriverManager.getConnection("jdbc:oracle:thin:" + host + ":" + port + "/" + sid, login, password);
 
+                initAddressBook(ab, conn);
+
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Invalid login. Could not connect to database.");
+        }
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -87,7 +66,6 @@ public class AddressBookApplication {
                 frame.setMinimumSize(new Dimension(360, 360));
                 frame.setSize(640, 480);
                 frame.setLocationRelativeTo(null);
-                frame.setDefaultLookAndFeelDecorated(false);
 
                 frame.add(menu.getRoot());
                 frame.setVisible(true);
@@ -96,13 +74,36 @@ public class AddressBookApplication {
     }
 
     /**
-     * Initializes the {@link AddressBook} ab from a text file.
+     * Initializes the {@link AddressBook} ab from a database.
      *
-     * @param ab       The {@link AddressBook} that will have two
-     *                 {@link AddressEntry address entries} added to it.
-     * @param filePath The path to the text file to load {@link AddressEntry address entries} from.
+     * @param ab The {@link AddressBook} that will have two
+     *           {@link AddressEntry address entries} added to it.
+     * @param conn A database connection.
      */
-    private static void initAddressBook(AddressBook ab, String filePath) {
-        ab.loadFile(filePath);
+    private static void initAddressBook(AddressBook ab, Connection conn) throws SQLException {
+        // Create a Statement
+        Statement stmt = conn.createStatement();
+
+        // Query everything from ADDRESSENTRYTABLE
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM ADDRESSENTRYTABLE");
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("ID");
+            String firstName = resultSet.getString("FIRSTNAME");
+            String lastName = resultSet.getString("LASTNAME");
+            String street = resultSet.getString("STREET");
+            String city = resultSet.getString("CITY");
+            String state = resultSet.getString("STATE");
+            int zip = resultSet.getInt("ZIP");
+            String phone = resultSet.getString("PHONE");
+            String email = resultSet.getString("EMAIL");
+
+            AddressEntry entry = new AddressEntry(firstName, lastName, street, city, state, zip, phone, email);
+            entry.setId(id);
+            ab.addEntry(entry);
+        }
+
+        resultSet.close();
+        stmt.close();
     }
 }
