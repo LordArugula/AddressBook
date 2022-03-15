@@ -7,6 +7,11 @@ package address.data;
 public class AddressEntry {
 
     /**
+     * The id of the {@link AddressEntry} contact.
+     */
+    private int id;
+
+    /**
      * The first name of the {@link AddressEntry} contact.
      */
     private String firstName;
@@ -77,144 +82,162 @@ public class AddressEntry {
     }
 
     /**
-     * Gets the contact's first name.
+     * Gets the id of the {@link AddressEntry}.
      *
-     * @return The first name of the contact.
+     * @return the id of the {@link AddressEntry}.
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Changes the id of the {@link AddressEntry}.
+     *
+     * @param id The entry's new id.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the entry's first name.
+     *
+     * @return The first name of the entry.
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * Changes the contact's first name.
+     * Changes the entry's first name.
      *
-     * @param firstName The contact's new first name.
+     * @param firstName The entry's new first name.
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * Gets the contact's last name.
+     * Gets the entry's last name.
      *
-     * @return The last name of the contact.
+     * @return The last name of the entry.
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * Changes the contact's last name.
+     * Changes the entry's last name.
      *
-     * @param lastName The contact's new last name.
+     * @param lastName The entry's new last name.
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * Gets the contact's street name.
+     * Gets the entry's street name.
      *
-     * @return The street name of the contact.
+     * @return The street name of the entry.
      */
     public String getStreet() {
         return street;
     }
 
     /**
-     * Changes the contact's street name.
+     * Changes the entry's street name.
      *
-     * @param street The contact's new street.
+     * @param street The entry's new street.
      */
     public void setStreet(String street) {
         this.street = street;
     }
 
     /**
-     * Gets the contact's city name.
+     * Gets the entry's city name.
      *
-     * @return The city of the contact.
+     * @return The city of the entry.
      */
     public String getCity() {
         return city;
     }
 
     /**
-     * Changes the contact's city name.
+     * Changes the entry's city name.
      *
-     * @param city The contact's new city.
+     * @param city The entry's new city.
      */
     public void setCity(String city) {
         this.city = city;
     }
 
     /**
-     * Gets the contact's state.
+     * Gets the entry's state.
      *
-     * @return The state of the contact.
+     * @return The state of the entry.
      */
     public String getState() {
         return state;
     }
 
     /**
-     * Changes the contact's state.
+     * Changes the entry's state.
      *
-     * @param state The contact's new state.
+     * @param state The entry's new state.
      */
     public void setState(String state) {
         this.state = state;
     }
 
     /**
-     * Gets the contact's zipcode.
+     * Gets the entry's zipcode.
      *
-     * @return The zipcode of the contact.
+     * @return The zipcode of the entry.
      */
     public int getZip() {
         return zip;
     }
 
     /**
-     * Changes the contact's zipcode.
+     * Changes the entry's zipcode.
      *
-     * @param zip The contact's new zipcode.
+     * @param zip The entry's new zipcode.
      */
     public void setZip(int zip) {
         this.zip = zip;
     }
 
     /**
-     * Gets the contact's email address.
+     * Gets the entry's email address.
      *
-     * @return The email address of the contact.
+     * @return The email address of the entry.
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Changes the contact's email address.
+     * Changes the entry's email address.
      *
-     * @param email The contact's new email address.
+     * @param email The entry's new email address.
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Gets the contact's phone number.
+     * Gets the entry's phone number.
      *
-     * @return The phone number of the contact.
+     * @return The phone number of the entry.
      */
     public String getPhone() {
         return phone;
     }
 
     /**
-     * Changes the contact's phone number.
+     * Changes the entry's phone number.
      *
-     * @param phone The contact's new phone number.
+     * @param phone The entry's new phone number.
      */
     public void setPhone(String phone) {
         this.phone = phone;
