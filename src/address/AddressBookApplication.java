@@ -78,8 +78,8 @@ public class AddressBookApplication {
     /**
      * Initializes the {@link AddressBook} ab from a database.
      *
-     * @param ab The {@link AddressBook} that will have two
-     *           {@link AddressEntry address entries} added to it.
+     * @param ab   The {@link AddressBook} that will have two
+     *             {@link AddressEntry address entries} added to it.
      * @param conn A database connection.
      */
     private static void initAddressBook(AddressBook ab, Connection conn) throws SQLException {
