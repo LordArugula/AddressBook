@@ -54,6 +54,8 @@ public class AddressBookApplication {
             System.out.println("Invalid login. Could not connect to database.");
         }
 
+        ab.listEntries();
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
