@@ -3,9 +3,11 @@ package address;
 import address.data.AddressBook;
 import address.data.AddressEntry;
 import address.gui.MenuGUI;
+import oracle.jdbc.driver.OracleDriver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -22,10 +24,56 @@ public class AddressBookApplication {
      * @param args The input arguments.
      */
     public static void main(String[] args) {
-        final String filePath = "resources/input.txt";
+
+        try {
+            // Load the Oracle JDBC driver
+            DriverManager.registerDriver(new OracleDriver());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         AddressBook ab = new AddressBook();
-        initAddressBook(ab, filePath);
+
+        if (args.length != 5) {
+            System.out.println("Invalid login. Could not connect to database.");
+            return;
+        }
+        String login = args[0];
+        String password = args[1];
+        String host = args[2];
+        String port = args[3];
+        String sid = args[4];
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:oracle:thin:" + host + ":" + port + "/" + sid, login, password);
+
+            // Create a Statement
+            Statement stmt = conn.createStatement();
+
+            ResultSet resultSet = stmt.executeQuery("SELECT * FROM ADDRESSENTRYTABLE");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String firstName = resultSet.getString("FIRSTNAME");
+                String lastName = resultSet.getString("LASTNAME");
+                String street = resultSet.getString("STREET");
+                String city = resultSet.getString("CITY");
+                String state = resultSet.getString("STATE");
+                int zip = resultSet.getInt("ZIP");
+                String phone = resultSet.getString("PHONE");
+                String email = resultSet.getString("EMAIL");
+                AddressEntry entry = new AddressEntry(firstName, lastName, street, city, state, zip, phone, email);
+                entry.setId(id);
+                ab.addEntry(entry);
+                System.out.println(entry);
+            }
+
+            resultSet.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
