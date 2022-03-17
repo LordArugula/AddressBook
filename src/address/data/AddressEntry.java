@@ -35,12 +35,13 @@ public class AddressEntry {
      * Creates an empty {@link AddressEntry}.
      */
     public AddressEntry() {
+        id = -1;
         name = new Name("", "");
         address = new Address("", "", "", 0);
     }
 
     /**
-     * Creates a complete {@link AddressEntry}.
+     * Creates a filled-out {@link AddressEntry}.
      *
      * @param firstName The first name.
      * @param lastName  The last name.
@@ -52,8 +53,9 @@ public class AddressEntry {
      * @param phone     The phone number.
      */
     public AddressEntry(String firstName, String lastName, String street, String city, String state, int zip, String phone, String email) {
-        this.name = new Name(firstName, lastName);
-        this.address = new Address(street, city, state, zip);
+        id = -1;
+        name = new Name(firstName, lastName);
+        address = new Address(street, city, state, zip);
         this.phone = phone;
         this.email = email;
     }
