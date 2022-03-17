@@ -12,34 +12,14 @@ public class AddressEntry {
     private int id;
 
     /**
-     * The first name of the {@link AddressEntry} contact.
+     * The name of the {@link AddressEntry} contact.
      */
-    private String firstName;
+    private Name name;
 
     /**
-     * The last name of the {@link AddressEntry} contact.
+     * The address of the {@link AddressEntry} contact.
      */
-    private String lastName;
-
-    /**
-     * The street name of the {@link AddressEntry} contact.
-     */
-    private String street;
-
-    /**
-     * The city of the {@link AddressEntry} contact.
-     */
-    private String city;
-
-    /**
-     * The state of the {@link AddressEntry} contact.
-     */
-    private String state;
-
-    /**
-     * The zip code of the {@link AddressEntry} contact.
-     */
-    private int zip;
+    private Address address;
 
     /**
      * The email address of the {@link AddressEntry} contact.
@@ -71,12 +51,8 @@ public class AddressEntry {
      * @param phone     The phone number.
      */
     public AddressEntry(String firstName, String lastName, String street, String city, String state, int zip, String phone, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
+        this.name = new Name(firstName, lastName);
+        this.address = new Address(street, city, state, zip);
         this.phone = phone;
         this.email = email;
     }
@@ -105,7 +81,7 @@ public class AddressEntry {
      * @return The first name of the entry.
      */
     public String getFirstName() {
-        return firstName;
+        return name.getFirst();
     }
 
     /**
@@ -114,7 +90,7 @@ public class AddressEntry {
      * @param firstName The entry's new first name.
      */
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        name.setFirst(firstName);
     }
 
     /**
@@ -123,7 +99,7 @@ public class AddressEntry {
      * @return The last name of the entry.
      */
     public String getLastName() {
-        return lastName;
+        return name.getLast();
     }
 
     /**
@@ -132,7 +108,7 @@ public class AddressEntry {
      * @param lastName The entry's new last name.
      */
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        name.setLast(lastName);
     }
 
     /**
@@ -141,7 +117,7 @@ public class AddressEntry {
      * @return The street name of the entry.
      */
     public String getStreet() {
-        return street;
+        return address.getStreet();
     }
 
     /**
@@ -150,7 +126,7 @@ public class AddressEntry {
      * @param street The entry's new street.
      */
     public void setStreet(String street) {
-        this.street = street;
+        address.setStreet(street);
     }
 
     /**
@@ -159,7 +135,7 @@ public class AddressEntry {
      * @return The city of the entry.
      */
     public String getCity() {
-        return city;
+        return address.getCity();
     }
 
     /**
@@ -168,7 +144,7 @@ public class AddressEntry {
      * @param city The entry's new city.
      */
     public void setCity(String city) {
-        this.city = city;
+        address.setCity(city);
     }
 
     /**
@@ -177,7 +153,7 @@ public class AddressEntry {
      * @return The state of the entry.
      */
     public String getState() {
-        return state;
+        return address.getState();
     }
 
     /**
@@ -186,7 +162,7 @@ public class AddressEntry {
      * @param state The entry's new state.
      */
     public void setState(String state) {
-        this.state = state;
+        address.setState(state);
     }
 
     /**
@@ -195,7 +171,7 @@ public class AddressEntry {
      * @return The zipcode of the entry.
      */
     public int getZip() {
-        return zip;
+        return address.getZip();
     }
 
     /**
@@ -204,7 +180,7 @@ public class AddressEntry {
      * @param zip The entry's new zipcode.
      */
     public void setZip(int zip) {
-        this.zip = zip;
+        address.setZip(zip);
     }
 
     /**
@@ -251,6 +227,6 @@ public class AddressEntry {
      */
     @Override
     public String toString() {
-        return firstName + '\n' + lastName + '\n' + street + '\n' + city + '\n' + state + '\n' + zip + '\n' + email + '\n' + phone;
+        return name.toString() + '\n' + address.toString() + '\n' + email + '\n' + phone;
     }
 }
