@@ -3,7 +3,6 @@ package address;
 import address.data.AddressBook;
 import address.data.AddressEntry;
 import address.gui.MenuGUI;
-import oracle.jdbc.driver.OracleDriver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,27 +25,18 @@ public class AddressBookApplication {
     public static void main(String[] args) {
 
         AddressBook ab = new AddressBook();
-
+        AddressBookConnection connection;
         if (args.length == 5) {
-
-            try {
-                // Load the Oracle JDBC driver
-                DriverManager.registerDriver(new OracleDriver());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
             try {
                 String login = args[0];
                 String password = args[1];
                 String host = args[2];
                 String port = args[3];
                 String sid = args[4];
-                Connection conn = DriverManager.getConnection("jdbc:oracle:thin:" + host + ":" + port + "/" + sid, login, password);
 
-                initAddressBook(ab, conn);
-
-                conn.close();
+                connection = new AddressBookConnection("jdbc:oracle:thin:@" + host + ":" + port + "/" + sid, login, password);
+                initAddressBook(ab, connection);
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -82,30 +72,9 @@ public class AddressBookApplication {
      *             {@link AddressEntry address entries} added to it.
      * @param conn A database connection.
      */
-    private static void initAddressBook(AddressBook ab, Connection conn) throws SQLException {
-        // Create a Statement
-        Statement stmt = conn.createStatement();
-
-        // Query everything from ADDRESSENTRYTABLE
-        ResultSet resultSet = stmt.executeQuery("SELECT * FROM ADDRESSENTRYTABLE");
-
-        while (resultSet.next()) {
-            int id = resultSet.getInt("ID");
-            String firstName = resultSet.getString("FIRSTNAME");
-            String lastName = resultSet.getString("LASTNAME");
-            String street = resultSet.getString("STREET");
-            String city = resultSet.getString("CITY");
-            String state = resultSet.getString("STATE");
-            int zip = resultSet.getInt("ZIP");
-            String phone = resultSet.getString("PHONE");
-            String email = resultSet.getString("EMAIL");
-
-            AddressEntry entry = new AddressEntry(firstName, lastName, street, city, state, zip, phone, email);
-            entry.setId(id);
+    private static void initAddressBook(AddressBook ab, AddressBookConnection conn) throws SQLException {
+        for (AddressEntry entry : conn.getEntries()) {
             ab.addEntry(entry);
         }
-
-        resultSet.close();
-        stmt.close();
     }
 }
