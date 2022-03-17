@@ -40,7 +40,7 @@ public class MenuGUI {
     /**
      * The view for the scroll pane.
      */
-    private JList<AddressEntry> addressEntryJList;
+    private AddressEntryList addressEntryList;
 
     /**
      * The text field for the first name.
@@ -97,13 +97,11 @@ public class MenuGUI {
      * The container for the {@link AddressEntry} input fields.
      */
     private JPanel addressEntryForm;
-    private JPanel firstNameField;
-    private JPanel lastNameField;
 
     /**
      * The {@link AddressBook}.
      */
-    private AddressBook ab;
+    private final AddressBook ab;
 
     /**
      * The currently selected {@link AddressEntry}.
@@ -127,11 +125,8 @@ public class MenuGUI {
     private void initUI() {
         addressEntryForm.setVisible(false);
 
-        addressEntryJList = new JList<>();
-        addressEntryJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        addressEntryJList.setCellRenderer(new AddressEntryCellRenderer());
-        addressEntryJList.addListSelectionListener(this::onSelectEntry);
-        scrollPane.setViewportView(addressEntryJList);
+        addressEntryList = new AddressEntryList(this::onSelectEntry);
+        scrollPane.setViewportView(addressEntryList);
         displayButton.addActionListener(this::onDisplayEntries);
 
         newButton.addActionListener(this::onRequestNewEntry);
@@ -141,24 +136,6 @@ public class MenuGUI {
         cancelButton.addActionListener(this::onCancelEntry);
 
         removeButton.addActionListener(this::onRemoveSelectedEntry);
-    }
-
-    /**
-     * Gets the {@link AddressBook}.
-     *
-     * @return the {@link AddressBook}.
-     */
-    public AddressBook getAddressBook() {
-        return ab;
-    }
-
-    /**
-     * Sets the {@link AddressBook}.
-     *
-     * @param ab The {@link AddressBook}.
-     */
-    public void setAddressBook(AddressBook ab) {
-        this.ab = ab;
     }
 
     /**
@@ -175,7 +152,7 @@ public class MenuGUI {
      * sorted in alphabetical order by last name, then first name.
      */
     private void displayEntries() {
-        addressEntryJList.setListData((ab.getEntries()).toArray(new AddressEntry[0]));
+        addressEntryList.setListData(ab.getEntries());
     }
 
     /**
@@ -184,7 +161,7 @@ public class MenuGUI {
      * @param evt The list selection event.
      */
     private void onSelectEntry(ListSelectionEvent evt) {
-        selectedEntry = addressEntryJList.getSelectedValue();
+        selectedEntry = addressEntryList.getSelectedValue();
         if (selectedEntry == null) {
             return;
         }
@@ -198,7 +175,7 @@ public class MenuGUI {
      * @param evt The button event.
      */
     private void onRequestNewEntry(ActionEvent evt) {
-        clearSelection();
+        addressEntryList.clearSelection();
 
         selectedEntry = new AddressEntry();
         showAddressEntryForm(selectedEntry, "Create New", "Cancel");
@@ -295,14 +272,7 @@ public class MenuGUI {
      */
     private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
-        clearSelection();
-    }
-
-    /**
-     * Clears the selected {@link AddressEntry}.
-     */
-    private void clearSelection() {
-        addressEntryJList.setSelectedValue(null, false);
+        addressEntryList.clearSelection();
     }
 
     private void onRemoveSelectedEntry(ActionEvent evt) {
