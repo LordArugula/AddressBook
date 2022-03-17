@@ -35,7 +35,8 @@ public class AddressEntry {
      * Creates an empty {@link AddressEntry}.
      */
     public AddressEntry() {
-
+        name = new Name("", "");
+        address = new Address("", "", "", 0);
     }
 
     /**
