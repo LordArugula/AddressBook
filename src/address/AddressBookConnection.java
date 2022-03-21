@@ -26,7 +26,7 @@ public class AddressBookConnection {
         selectNthStatement.setInt(1, row);
         ResultSet resultSet = selectNthStatement.executeQuery();
         if (resultSet.next()) {
-            int id = resultSet.getInt("ID");
+            int id = resultSet.getInt(1);
             entry.setId(id);
         }
         resultSet.close();
@@ -50,9 +50,13 @@ public class AddressBookConnection {
             return;
         }
 
-        PreparedStatement statement = connection.prepareStatement("UPDATE ADDRESSENTRYTABLE SET FIRSTNAME = ?, LASTNAME = ?, CITY = ?, STATE = ?, ZIP = ?, PHONE = ?, EMAIL = ? WHERE ID = ?");
+        PreparedStatement statement = connection.prepareStatement("UPDATE ADDRESSENTRYTABLE SET FIRSTNAME = ?, LASTNAME = ?, STREET = ?, CITY = ?, STATE = ?, ZIP = ?, PHONE = ?, EMAIL = ? WHERE ID = ?");
         setValues(entry, statement);
+        statement.setInt(9, entry.getId());
+
         statement.executeUpdate();
+        statement.close();
+    }
 
     public void deleteEntry(AddressEntry entry) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("DELETE FROM ADDRESSENTRYTABLE WHERE ID = ?");
