@@ -1,12 +1,14 @@
 package address.gui;
 
 import address.AddressBookApplication;
+import address.AddressBookConnection;
 import address.data.AddressBook;
 import address.data.AddressEntry;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 /**
  * Defines the GUI for the {@link AddressBookApplication}.
@@ -87,7 +89,6 @@ public class MenuGUI {
      */
     private JButton submitButton;
 
-
     /**
      * The button to cancels changes to the {@link AddressEntry}.
      */
@@ -104,6 +105,11 @@ public class MenuGUI {
     private final AddressBook ab;
 
     /**
+     * The connection to the {@link AddressBook} database.
+     */
+    private final AddressBookConnection connection;
+
+    /**
      * The currently selected {@link AddressEntry}.
      */
     private AddressEntry selectedEntry;
@@ -113,8 +119,9 @@ public class MenuGUI {
      *
      * @param ab The {@link AddressBook} to use with the {@link MenuGUI}.
      */
-    public MenuGUI(AddressBook ab) {
+    public MenuGUI(AddressBook ab, AddressBookConnection connection) {
         this.ab = ab;
+        this.connection = connection;
 
         initUI();
     }
@@ -161,6 +168,11 @@ public class MenuGUI {
      * @param evt The list selection event.
      */
     private void onSelectEntry(ListSelectionEvent evt) {
+        AddressEntry entry = addressEntryList.getSelectedValue();
+        if (selectedEntry == entry) {
+            return;
+        }
+
         selectedEntry = addressEntryList.getSelectedValue();
         if (selectedEntry == null) {
             return;
@@ -251,6 +263,15 @@ public class MenuGUI {
         selectedEntry.setPhone(phone);
         selectedEntry.setEmail(email);
 
+            if (connection != null) {
+                try {
+                    connection.updateEntry(selectedEntry);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         ab.addEntry(selectedEntry);
         hideAddressEntryForm();
         displayEntries();
@@ -281,6 +302,13 @@ public class MenuGUI {
         }
 
         ab.removeEntry(selectedEntry);
+        if (connection != null) {
+            try {
+                connection.deleteEntry(selectedEntry);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         displayEntries();
         hideAddressEntryForm();
     }
