@@ -53,6 +53,12 @@ public class AddressBookConnection {
         PreparedStatement statement = connection.prepareStatement("UPDATE ADDRESSENTRYTABLE SET FIRSTNAME = ?, LASTNAME = ?, CITY = ?, STATE = ?, ZIP = ?, PHONE = ?, EMAIL = ? WHERE ID = ?");
         setValues(entry, statement);
         statement.executeUpdate();
+
+    public void deleteEntry(AddressEntry entry) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM ADDRESSENTRYTABLE WHERE ID = ?");
+        statement.setInt(1, entry.getId());
+        statement.executeUpdate();
+        statement.close();
     }
 
     public Collection<AddressEntry> getEntries() throws SQLException {
