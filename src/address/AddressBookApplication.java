@@ -25,7 +25,7 @@ public class AddressBookApplication {
     public static void main(String[] args) {
 
         AddressBook ab = new AddressBook();
-        AddressBookConnection connection;
+        AddressBookConnection connection = null;
         if (args.length == 5) {
             try {
                 String login = args[0];
@@ -36,7 +36,6 @@ public class AddressBookApplication {
 
                 connection = new AddressBookConnection("jdbc:oracle:thin:@" + host + ":" + port + "/" + sid, login, password);
                 initAddressBook(ab, connection);
-                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -46,11 +45,12 @@ public class AddressBookApplication {
 
         ab.listEntries();
 
+        AddressBookConnection finalConnection = connection;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 var frame = new JFrame();
-                MenuGUI menu = new MenuGUI(ab);
+                MenuGUI menu = new MenuGUI(ab, finalConnection);
 
                 frame.setTitle("Address Book Application");
                 frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
