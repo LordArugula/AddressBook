@@ -2,13 +2,9 @@ package address;
 
 import address.data.AddressBook;
 import address.data.AddressEntry;
-import address.gui.MenuGUI;
 
 import javax.swing.*;
-import java.awt.*;
-import java.sql.*;
-
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import java.sql.SQLException;
 
 /**
  * AddressBookApplication is the entry point of the application and
@@ -45,24 +41,7 @@ public class AddressBookApplication {
 
         ab.listEntries();
 
-        AddressBookConnection finalConnection = connection;
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                var frame = new JFrame();
-                MenuGUI menu = new MenuGUI(ab, finalConnection);
-
-                frame.setTitle("Address Book Application");
-                frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-                frame.setMinimumSize(new Dimension(360, 360));
-                frame.setSize(640, 480);
-                frame.setLocationRelativeTo(null);
-
-                frame.add(menu.getRoot());
-                frame.setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(new AddressBookRunnable(new Menu(ab, connection)));
     }
 
     /**

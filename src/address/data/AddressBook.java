@@ -193,4 +193,11 @@ public class AddressBook {
             i++;
         }
     }
+
+    /**
+     * Clears the {@link AddressBook}.
+     */
+    public void clear() {
+        entries.clear();
+    }
 }

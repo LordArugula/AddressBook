@@ -1,14 +1,14 @@
 package address.gui;
 
 import address.AddressBookApplication;
-import address.AddressBookConnection;
+import address.Menu;
 import address.data.AddressBook;
 import address.data.AddressEntry;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
+import java.util.Collection;
 
 /**
  * Defines the GUI for the {@link AddressBookApplication}.
@@ -100,29 +100,28 @@ public class MenuGUI {
     private JPanel addressEntryForm;
 
     /**
-     * The {@link AddressBook}.
+     * The search field text input.
      */
-    private final AddressBook ab;
+    private JTextField searchField;
 
     /**
-     * The connection to the {@link AddressBook} database.
+     * The {@link Menu} to interface with to modify
+     * its internal {@link AddressBook}.
      */
-    private final AddressBookConnection connection;
+    private final Menu menu;
 
     /**
      * The currently selected {@link AddressEntry}.
      */
-    private AddressEntry selectedEntry;
+    private AddressEntry currentEntry;
 
     /**
      * Initializes a {@link MenuGUI} with an {@link AddressBook}.
      *
-     * @param ab The {@link AddressBook} to use with the {@link MenuGUI}.
+     * @param menu The {@link Menu} to interface with.
      */
-    public MenuGUI(AddressBook ab, AddressBookConnection connection) {
-        this.ab = ab;
-        this.connection = connection;
-
+    public MenuGUI(Menu menu) {
+        this.menu = menu;
         initUI();
     }
 
@@ -143,6 +142,14 @@ public class MenuGUI {
         cancelButton.addActionListener(this::onCancelEntry);
 
         removeButton.addActionListener(this::onRemoveSelectedEntry);
+
+        searchField.addActionListener(this::onSearchEntries);
+    }
+
+    private void onSearchEntries(ActionEvent evt) {
+        String query = searchField.getText();
+        Collection<AddressEntry> entries = menu.findEntries(query);
+        displayEntries(entries);
     }
 
     /**
@@ -155,11 +162,23 @@ public class MenuGUI {
     }
 
     /**
+     * Displays a list of all {@link AddressEntry address entries}
+     * in the {@link AddressBook} sorted in alphabetical order by
+     * last name, then first name.
+     */
+    private void displayEntries() {
+        menu.refreshAddressBook();
+        addressEntryList.setListData(menu.getEntries());
+        hideAddressEntryForm();
+    }
+
+    /**
      * Displays a list of {@link AddressEntry address entries}
      * sorted in alphabetical order by last name, then first name.
      */
-    private void displayEntries() {
-        addressEntryList.setListData(ab.getEntries());
+    private void displayEntries(Collection<AddressEntry> entries) {
+        addressEntryList.setListData(entries);
+        hideAddressEntryForm();
     }
 
     /**
@@ -169,15 +188,14 @@ public class MenuGUI {
      */
     private void onSelectEntry(ListSelectionEvent evt) {
         AddressEntry entry = addressEntryList.getSelectedValue();
-        if (selectedEntry == entry) {
+        if (entry == currentEntry) {
             return;
         }
-
-        selectedEntry = addressEntryList.getSelectedValue();
-        if (selectedEntry == null) {
+        currentEntry = entry;
+        if (entry == null) {
             return;
         }
-        showAddressEntryForm(selectedEntry, "Edit Entry", "Cancel Changes");
+        showAddressEntryForm(entry, "Edit Entry", "Cancel Changes");
     }
 
     /**
@@ -189,8 +207,8 @@ public class MenuGUI {
     private void onRequestNewEntry(ActionEvent evt) {
         addressEntryList.clearSelection();
 
-        selectedEntry = new AddressEntry();
-        showAddressEntryForm(selectedEntry, "Create New", "Cancel");
+        currentEntry = new AddressEntry();
+        showAddressEntryForm(currentEntry, "Create New", "Cancel");
     }
 
     /**
@@ -252,28 +270,7 @@ public class MenuGUI {
             }
         }
 
-        ab.removeEntry(selectedEntry);
-
-        selectedEntry.setFirstName(firstName);
-        selectedEntry.setLastName(lastName);
-        selectedEntry.setStreet(street);
-        selectedEntry.setCity(city);
-        selectedEntry.setState(state);
-        selectedEntry.setZip(zipcode);
-        selectedEntry.setPhone(phone);
-        selectedEntry.setEmail(email);
-
-            if (connection != null) {
-                try {
-                    connection.updateEntry(selectedEntry);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        ab.addEntry(selectedEntry);
-        hideAddressEntryForm();
+        menu.updateEntry(currentEntry, firstName, lastName, street, city, state, zipcode, phone, email);
         displayEntries();
     }
 
@@ -294,25 +291,23 @@ public class MenuGUI {
     private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
         addressEntryList.clearSelection();
+        currentEntry = null;
     }
 
     private void onRemoveSelectedEntry(ActionEvent evt) {
-        if (selectedEntry == null) {
+        AddressEntry selected = addressEntryList.getSelectedValue();
+        if (selected == null) {
             return;
         }
-
-        ab.removeEntry(selectedEntry);
-        if (connection != null) {
-            try {
-                connection.deleteEntry(selectedEntry);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        menu.removeEntry(selected);
         displayEntries();
-        hideAddressEntryForm();
     }
 
+    /**
+     * Returns the root panel.
+     *
+     * @return the root panel.
+     */
     public JPanel getRoot() {
         return root;
     }
