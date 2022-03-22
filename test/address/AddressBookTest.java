@@ -112,7 +112,7 @@ public class AddressBookTest {
     }
 
     /**
-     * Tests that findEntries returns a {@link Collection<>}
+     * Tests that findEntries returns a {@link Collection<AddressEntry>}
      * of the {@link AddressEntry entries} that start with the last name.
      */
     @Test

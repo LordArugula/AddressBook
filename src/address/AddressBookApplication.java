@@ -2,12 +2,9 @@ package address;
 
 import address.data.AddressBook;
 import address.data.AddressEntry;
-import address.gui.MenuGUI;
 
 import javax.swing.*;
-import java.awt.*;
-
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import java.sql.SQLException;
 
 /**
  * AddressBookApplication is the entry point of the application and
@@ -22,39 +19,42 @@ public class AddressBookApplication {
      * @param args The input arguments.
      */
     public static void main(String[] args) {
-        final String filePath = "resources/input.txt";
 
         AddressBook ab = new AddressBook();
-        initAddressBook(ab, filePath);
+        AddressBookConnection connection = null;
+        if (args.length == 5) {
+            try {
+                String login = args[0];
+                String password = args[1];
+                String host = args[2];
+                String port = args[3];
+                String sid = args[4];
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                var frame = new JFrame();
-                MenuGUI menu = new MenuGUI(ab);
-
-                frame.setTitle("Address Book Application");
-                frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-                frame.setMinimumSize(new Dimension(360, 360));
-                frame.setSize(640, 480);
-                frame.setLocationRelativeTo(null);
-                frame.setDefaultLookAndFeelDecorated(false);
-
-                frame.add(menu.getRoot());
-                frame.setVisible(true);
+                connection = new AddressBookConnection("jdbc:oracle:thin:@" + host + ":" + port + "/" + sid, login, password);
+                initAddressBook(ab, connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        });
+        } else {
+            System.out.println("Invalid login. Could not connect to database.");
+        }
+
+        ab.listEntries();
+
+        SwingUtilities.invokeLater(new AddressBookRunnable(new Menu(ab, connection)));
     }
 
     /**
-     * Initializes the {@link AddressBook} ab from a text file.
+     * Initializes the {@link AddressBook} ab from a database.
      *
-     * @param ab       The {@link AddressBook} that will have two
-     *                 {@link AddressEntry address entries} added to it.
-     * @param filePath The path to the text file to load {@link AddressEntry address entries} from.
+     * @param ab   The {@link AddressBook} that will have two
+     *             {@link AddressEntry address entries} added to it.
+     * @param conn A database connection.
+     * @throws SQLException Thrown if there is a database error.
      */
-    private static void initAddressBook(AddressBook ab, String filePath) {
-        ab.loadFile(filePath);
+    private static void initAddressBook(AddressBook ab, AddressBookConnection conn) throws SQLException {
+        for (AddressEntry entry : conn.getEntries()) {
+            ab.addEntry(entry);
+        }
     }
 }

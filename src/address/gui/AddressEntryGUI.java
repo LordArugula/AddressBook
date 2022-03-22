@@ -18,6 +18,10 @@ public class AddressEntryGUI {
      */
     private JLabel label;
 
+    /**
+     * Initializes the GUI with text as the label.
+     * @param text the string to make the label.
+     */
     public AddressEntryGUI(String text) {
         label.setText(text);
     }

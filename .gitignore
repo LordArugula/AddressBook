@@ -3,3 +3,6 @@
 
 # Build
 out/
+
+libs/
+docs/

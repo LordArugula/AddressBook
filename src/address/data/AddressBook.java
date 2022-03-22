@@ -22,11 +22,10 @@ public class AddressBook {
         /**
          * @param entry1 The first {@link AddressEntry}.
          * @param entry2 The second {@link AddressEntry}.
-         * @return <l>
-         * <li> &#8804; -1 if entry1 is less than entry2.</li>
-         * <li>0 if entry1 and entry2 are equal.</li>
-         * <li> &#8805; 1 if entry1 is greater than entry2.</li>
-         * </l>
+         * @return
+         * &#8804; -1 if entry1 is less than entry2.
+         * 0 if entry1 and entry2 are equal.
+         * &#8805; 1 if entry1 is greater than entry2.
          */
         @Override
         public int compare(AddressEntry entry1, AddressEntry entry2) {
@@ -192,5 +191,12 @@ public class AddressBook {
             stringBuilder.delete(0, stringBuilder.length());
             i++;
         }
+    }
+
+    /**
+     * Clears the {@link AddressBook}.
+     */
+    public void clear() {
+        entries.clear();
     }
 }

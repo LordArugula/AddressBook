@@ -1,12 +1,14 @@
 package address.gui;
 
 import address.AddressBookApplication;
+import address.Menu;
 import address.data.AddressBook;
 import address.data.AddressEntry;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 /**
  * Defines the GUI for the {@link AddressBookApplication}.
@@ -40,7 +42,7 @@ public class MenuGUI {
     /**
      * The view for the scroll pane.
      */
-    private JList<AddressEntry> addressEntryJList;
+    private AddressEntryList addressEntryList;
 
     /**
      * The text field for the first name.
@@ -87,7 +89,6 @@ public class MenuGUI {
      */
     private JButton submitButton;
 
-
     /**
      * The button to cancels changes to the {@link AddressEntry}.
      */
@@ -97,27 +98,30 @@ public class MenuGUI {
      * The container for the {@link AddressEntry} input fields.
      */
     private JPanel addressEntryForm;
-    private JPanel firstNameField;
-    private JPanel lastNameField;
 
     /**
-     * The {@link AddressBook}.
+     * The search field text input.
      */
-    private AddressBook ab;
+    private JTextField searchField;
+
+    /**
+     * The {@link Menu} to interface with to modify
+     * its internal {@link AddressBook}.
+     */
+    private final Menu menu;
 
     /**
      * The currently selected {@link AddressEntry}.
      */
-    private AddressEntry selectedEntry;
+    private AddressEntry currentEntry;
 
     /**
      * Initializes a {@link MenuGUI} with an {@link AddressBook}.
      *
-     * @param ab The {@link AddressBook} to use with the {@link MenuGUI}.
+     * @param menu The {@link Menu} to interface with.
      */
-    public MenuGUI(AddressBook ab) {
-        this.ab = ab;
-
+    public MenuGUI(Menu menu) {
+        this.menu = menu;
         initUI();
     }
 
@@ -127,11 +131,8 @@ public class MenuGUI {
     private void initUI() {
         addressEntryForm.setVisible(false);
 
-        addressEntryJList = new JList<>();
-        addressEntryJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        addressEntryJList.setCellRenderer(new AddressEntryCellRenderer());
-        addressEntryJList.addListSelectionListener(this::onSelectEntry);
-        scrollPane.setViewportView(addressEntryJList);
+        addressEntryList = new AddressEntryList(this::onSelectEntry);
+        scrollPane.setViewportView(addressEntryList);
         displayButton.addActionListener(this::onDisplayEntries);
 
         newButton.addActionListener(this::onRequestNewEntry);
@@ -141,24 +142,19 @@ public class MenuGUI {
         cancelButton.addActionListener(this::onCancelEntry);
 
         removeButton.addActionListener(this::onRemoveSelectedEntry);
+
+        searchField.addActionListener(this::onSearchEntries);
     }
 
     /**
-     * Gets the {@link AddressBook}.
+     * Called when the search field text input is submitted.
      *
-     * @return the {@link AddressBook}.
+     * @param evt The submit event.
      */
-    public AddressBook getAddressBook() {
-        return ab;
-    }
-
-    /**
-     * Sets the {@link AddressBook}.
-     *
-     * @param ab The {@link AddressBook}.
-     */
-    public void setAddressBook(AddressBook ab) {
-        this.ab = ab;
+    private void onSearchEntries(ActionEvent evt) {
+        String query = searchField.getText();
+        Collection<AddressEntry> entries = menu.findEntries(query);
+        displayEntries(entries);
     }
 
     /**
@@ -171,11 +167,26 @@ public class MenuGUI {
     }
 
     /**
-     * Displays a list of {@link AddressEntry address entries}
-     * sorted in alphabetical order by last name, then first name.
+     * Displays a list of all {@link AddressEntry address entries}
+     * in the {@link AddressBook} sorted in alphabetical order by
+     * last name, then first name.
      */
     private void displayEntries() {
-        addressEntryJList.setListData((ab.getEntries()).toArray(new AddressEntry[0]));
+        menu.refreshAddressBook();
+        addressEntryList.setListData(menu.getEntries());
+        hideAddressEntryForm();
+    }
+
+    /**
+     * Displays a list of {@link AddressEntry address entries}
+     * sorted in alphabetical order by last name, then first name.
+     *
+     * @param entries A collection of {@link AddressEntry address entries}
+     *                to display.
+     */
+    private void displayEntries(Collection<AddressEntry> entries) {
+        addressEntryList.setListData(entries);
+        hideAddressEntryForm();
     }
 
     /**
@@ -184,11 +195,15 @@ public class MenuGUI {
      * @param evt The list selection event.
      */
     private void onSelectEntry(ListSelectionEvent evt) {
-        selectedEntry = addressEntryJList.getSelectedValue();
-        if (selectedEntry == null) {
+        AddressEntry entry = addressEntryList.getSelectedValue();
+        if (entry == currentEntry) {
             return;
         }
-        showAddressEntryForm(selectedEntry, "Edit Entry", "Cancel Changes");
+        currentEntry = entry;
+        if (entry == null) {
+            return;
+        }
+        showAddressEntryForm(entry, "Edit Entry", "Cancel Changes");
     }
 
     /**
@@ -198,10 +213,10 @@ public class MenuGUI {
      * @param evt The button event.
      */
     private void onRequestNewEntry(ActionEvent evt) {
-        clearSelection();
+        addressEntryList.clearSelection();
 
-        selectedEntry = new AddressEntry();
-        showAddressEntryForm(selectedEntry, "Create New", "Cancel");
+        currentEntry = new AddressEntry();
+        showAddressEntryForm(currentEntry, "Create New", "Cancel");
     }
 
     /**
@@ -263,19 +278,7 @@ public class MenuGUI {
             }
         }
 
-        ab.removeEntry(selectedEntry);
-
-        selectedEntry.setFirstName(firstName);
-        selectedEntry.setLastName(lastName);
-        selectedEntry.setStreet(street);
-        selectedEntry.setCity(city);
-        selectedEntry.setState(state);
-        selectedEntry.setZip(zipcode);
-        selectedEntry.setPhone(phone);
-        selectedEntry.setEmail(email);
-
-        ab.addEntry(selectedEntry);
-        hideAddressEntryForm();
+        menu.updateEntry(currentEntry, firstName, lastName, street, city, state, zipcode, phone, email);
         displayEntries();
     }
 
@@ -295,26 +298,30 @@ public class MenuGUI {
      */
     private void hideAddressEntryForm() {
         addressEntryForm.setVisible(false);
-        clearSelection();
+        addressEntryList.clearSelection();
+        currentEntry = null;
     }
 
     /**
-     * Clears the selected {@link AddressEntry}.
+     * Called when the remove button is clicked. Removes
+     * the selected {@link AddressEntry}.
+     *
+     * @param evt the button event.
      */
-    private void clearSelection() {
-        addressEntryJList.setSelectedValue(null, false);
-    }
-
     private void onRemoveSelectedEntry(ActionEvent evt) {
-        if (selectedEntry == null) {
+        AddressEntry selected = addressEntryList.getSelectedValue();
+        if (selected == null) {
             return;
         }
-
-        ab.removeEntry(selectedEntry);
+        menu.removeEntry(selected);
         displayEntries();
-        hideAddressEntryForm();
     }
 
+    /**
+     * Returns the root panel.
+     *
+     * @return the root panel.
+     */
     public JPanel getRoot() {
         return root;
     }
