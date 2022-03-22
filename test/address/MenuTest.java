@@ -74,6 +74,10 @@ public class MenuTest {
         Assertions.assertEquals(0, ab.size());
     }
 
+    /**
+     * Tests that findEntries returns the correct entries and
+     * the correct number of entries.
+     */
     @Test
     void testFindEntries() {
         Menu menu = new Menu(ab);

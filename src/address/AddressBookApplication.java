@@ -50,6 +50,7 @@ public class AddressBookApplication {
      * @param ab   The {@link AddressBook} that will have two
      *             {@link AddressEntry address entries} added to it.
      * @param conn A database connection.
+     * @throws SQLException Thrown if there is a database error.
      */
     private static void initAddressBook(AddressBook ab, AddressBookConnection conn) throws SQLException {
         for (AddressEntry entry : conn.getEntries()) {

@@ -146,6 +146,11 @@ public class MenuGUI {
         searchField.addActionListener(this::onSearchEntries);
     }
 
+    /**
+     * Called when the search field text input is submitted.
+     *
+     * @param evt The submit event.
+     */
     private void onSearchEntries(ActionEvent evt) {
         String query = searchField.getText();
         Collection<AddressEntry> entries = menu.findEntries(query);
@@ -175,6 +180,9 @@ public class MenuGUI {
     /**
      * Displays a list of {@link AddressEntry address entries}
      * sorted in alphabetical order by last name, then first name.
+     *
+     * @param entries A collection of {@link AddressEntry address entries}
+     *                to display.
      */
     private void displayEntries(Collection<AddressEntry> entries) {
         addressEntryList.setListData(entries);
@@ -294,6 +302,12 @@ public class MenuGUI {
         currentEntry = null;
     }
 
+    /**
+     * Called when the remove button is clicked. Removes
+     * the selected {@link AddressEntry}.
+     *
+     * @param evt the button event.
+     */
     private void onRemoveSelectedEntry(ActionEvent evt) {
         AddressEntry selected = addressEntryList.getSelectedValue();
         if (selected == null) {
